@@ -1,0 +1,47 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: amplifix
+#  profiles:
+#    default: dev
+#logging:
+#  level:
+#    root: DEBUG
+
+server:
+  port: 8080
+  use-forward-headers: true
+
+management:
+  server:
+    port: 8081
+  endpoints:
+    enabled-by-default: true
+    web:
+      base-path: /
+      exposure:
+        include: '*'
+      path-mapping:
+        health: /ping
+        metrics: micrometer
+        prometheus: metrics
+  endpoint:
+    health:
+      show-details: ALWAYS
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    prefix: battery
+    web:
+      server:
+        auto-time-requests: true
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles.http.server.requests: 0.9, 0.95, 0.99
+      percentiles-histogram.http.server.requests: true
+      sla.http.server.requests: 100ms, 500ms, 1000ms
