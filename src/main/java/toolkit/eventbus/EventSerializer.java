@@ -1,4 +1,4 @@
-package tool.eventbus;
+package toolkit.eventbus;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;

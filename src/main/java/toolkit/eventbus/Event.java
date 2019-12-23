@@ -1,4 +1,4 @@
-package tool.eventbus;
+package toolkit.eventbus;
 
 public class Event {
 

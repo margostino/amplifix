@@ -38,10 +38,9 @@ create_order() {
 main() {
     local max=${1}
     echo "Max amount of request " ${max}
-
-    #create_session ${max}
-    #payment_methods ${max}
-    #authorize ${max}
+    create_session ${max}
+    payment_methods ${max}
+    authorize ${max}
     create_order ${max}
 }
 

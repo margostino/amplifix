@@ -1,4 +1,4 @@
-package tool;
+package toolkit;
 
 import demo.DemoService;
 import demo.model.AuthorizeRequest;
@@ -9,9 +9,9 @@ import demo.model.PaymentMethodsRequest;
 import demo.model.PaymentMethodsResponse;
 import demo.model.SessionRequest;
 import demo.model.SessionResponse;
-import tool.eventbus.EventBusAdapter;
+import toolkit.eventbus.EventBusAdapter;
 
-
+@Deprecated
 public class Runner {
 
     public static void main(String[] args) {

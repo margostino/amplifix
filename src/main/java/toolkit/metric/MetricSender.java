@@ -1,7 +1,11 @@
-package tool.metric;
+package toolkit.metric;
 
 import io.micrometer.core.instrument.Counter;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class MetricSender {
@@ -12,7 +16,9 @@ public class MetricSender {
         this.registry = registry;
     }
 
-    public Counter send(Metric metric) {
-        return registry.increment(metric);
+    public List<Counter> send(List<Metric> metrics) {
+        return metrics.stream()
+                      .map(registry::increment)
+                      .collect(toList());
     }
 }

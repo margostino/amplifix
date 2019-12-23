@@ -1,4 +1,4 @@
-package tool.metric;
+package toolkit.metric;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -12,12 +12,6 @@ public class CounterRegistry {
     public CounterRegistry(MeterRegistry registry) {
         this.registry = registry;
     }
-
-//    public List<Counter> counter(List<Metric> metrics) {
-//        return metrics.stream()
-//                      .map(this::increment)
-//                      .collect(toList());
-//    }
 
     public Counter increment(Metric metric) {
         Counter counter = Counter

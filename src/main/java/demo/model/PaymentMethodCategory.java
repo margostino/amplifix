@@ -7,4 +7,5 @@ public enum PaymentMethodCategory {
     PAY_OVER_TIME,
     ALL,
     UNKNOWN;
+
 }

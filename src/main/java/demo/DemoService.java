@@ -7,7 +7,7 @@ import demo.model.OrderResponse;
 import demo.model.PaymentMethodsResponse;
 import demo.model.SessionRequest;
 import demo.model.SessionResponse;
-import tool.eventbus.EventBusAdapter;
+import toolkit.eventbus.EventBusAdapter;
 
 import static demo.model.Status.APPROVED;
 import static java.time.Instant.now;

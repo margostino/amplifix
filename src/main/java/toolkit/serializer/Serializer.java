@@ -1,4 +1,4 @@
-package tool.serializer;
+package toolkit.serializer;
 
 import java.io.InputStream;
 

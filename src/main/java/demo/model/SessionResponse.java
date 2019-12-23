@@ -1,7 +1,7 @@
 package demo.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tool.annotation.Counter;
+import toolkit.annotation.Counter;
 
 import java.time.Instant;
 import java.util.List;
@@ -12,7 +12,7 @@ import static demo.model.PaymentMethodCategory.PAY_NOW;
 import static demo.model.Status.APPROVED;
 import static java.util.Arrays.asList;
 
-@Counter(key = "paymentMethodCategories")
+@Counter(metricName = "create_session", fields = {"paymentMethodCategories", "country"})
 public class SessionResponse {
 
     @JsonProperty("session_id")
@@ -30,7 +30,17 @@ public class SessionResponse {
         this.created = created;
         this.country = country;
         this.status = APPROVED;
-        this.paymentMethodCategories = asList(PAY_LATER, PAY_NOW);
+
+        this.paymentMethodCategories = asList(PAY_NOW, PAY_LATER);
+//        int probability = getProbability();
+//        if (probability <= 10) {
+//            this.paymentMethodCategories = asList(PAY_NOW, PAY_LATER);
+//        } else if (probability <= 65) {
+//            this.paymentMethodCategories = asList(PAY_NOW);
+//        } else {
+//            this.paymentMethodCategories = asList(PAY_LATER);
+//        }
+
     }
 
 }

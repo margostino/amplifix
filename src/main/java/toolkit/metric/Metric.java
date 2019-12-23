@@ -1,4 +1,4 @@
-package tool.metric;
+package toolkit.metric;
 
 import lombok.Data;
 
