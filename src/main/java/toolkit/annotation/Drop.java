@@ -7,8 +7,10 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Counter {
+public @interface Drop {
     String metricName() default "";
 
-    String[] fields() default "";
+    String field() default "";
+
+    String event() default "";
 }

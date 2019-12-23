@@ -3,7 +3,6 @@ package toolkit.eventbus;
 import com.google.common.eventbus.Subscribe;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
-import toolkit.configuration.MetricConfiguration;
 import toolkit.metric.CounterRegistry;
 import toolkit.metric.Metric;
 import toolkit.metric.MetricBuilder;
@@ -17,7 +16,6 @@ public class EventListener<T> {
     private Gson gson;
     private MetricBuilder metricBuilder;
     private MetricSender metricSender;
-    public MetricConfiguration metricConfiguration;
 
     public EventListener(CounterRegistry counterRegistry, MetricBuilder metricBuilder) {
         this.gson = new Gson();
