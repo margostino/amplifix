@@ -6,8 +6,8 @@ set_docker_host_ip() {
 
 set_docker_host_ip
 
-sed -e "s/\${IP}/${DOCKERHOST}/" ./docker/prometheus_template.yml > ./docker/prometheus.yml
-sed -e "s/\${IP}/${DOCKERHOST}/" ./datasources/prometheus_template.json > ./datasources/prometheus.json
+sed -e "s/\${IP}/${DOCKERHOST}/" ./docker/prometheus/prometheus_template.yml > ./docker/prometheus/prometheus.yml
+sed -e "s/\${IP}/${DOCKERHOST}/" ./docker/grafana/datasources/datasources_template.yaml > ./docker/grafana/datasources/datasources.yaml
 
 services="grafana prometheus"
 docker-compose stop ${services}
@@ -19,7 +19,7 @@ docker-compose up --build -d ${services}
 sleep 10
 
 # Import Datasource
-curl -XPOST http://localhost:3000/api/datasources -u admin:admin -H "Content-Type: application/json" -H "Accept: application/json" -d @./datasources/prometheus.json
+#curl -XPOST http://localhost:3000/api/datasources -u admin:admin -H "Content-Type: application/json" -H "Accept: application/json" -d @./datasources/prometheus.json | jq "."
 
 # Import Dashboard
-#curl -XPOST http://localhost:3000/api/dashboards -u admin:admin -H "Content-Type: application/json" -H "Accept: application/json" -d @./dashboards/demo.json
+#curl -XPOST http://localhost:3000/api/dashboards/import -u admin:admin -H "Content-Type: application/json" -H "Accept: application/json" -d @./dashboards/demo_create_session.json
