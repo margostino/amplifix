@@ -20,13 +20,7 @@ public class CounterHandler<T> extends MetricHandler<T> {
         super(prefix);
     }
 
-    @AllArgsConstructor
-    public class Tag {
-        public String key;
-        public String value;
-    }
-
-    public List<Metric> build(T event, Annotation annotation) {
+    public List<Metric> process(T event, Annotation annotation) {
         Counter annotationCounter = (Counter) annotation;
         String metricName = decorateMetricName(prefix, annotationCounter.metricName());
         List<String> fieldNames = asList(annotationCounter.fields());
@@ -95,4 +89,11 @@ public class CounterHandler<T> extends MetricHandler<T> {
         tags.add(nestedTag.value);
         return new Metric(metricName, tags.stream().map(String::toLowerCase).collect(toList()));
     }
+
+    @AllArgsConstructor
+    public class Tag {
+        public String key;
+        public String value;
+    }
+
 }

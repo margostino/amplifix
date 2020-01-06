@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: amplifix-demo
+  name: amplifix-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: amplifix-demo
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: amplifix-demo
+    spec:
+      containers:
+      - image: amplifix:test
+        name: amplifix-demo
+        resources: {}
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: amplifix-demo
+  name: amplifix-demo
+spec:
+  ports:
+  - name: 8080-8080
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  - name: 8081-8081
+    port: 8081
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    app: amplifix-demo
+  type: ClusterIP
+status:
+  loadBalancer: {}

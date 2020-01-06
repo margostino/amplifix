@@ -62,7 +62,7 @@ public class DemoController {
                                        @PathVariable("session_id") @NotNull String sessionId,
                                        @RequestBody AuthorizeRequest request) {
         LOG.info("Authorize");
-        return demoService.authorize(request);
+        return demoService.authorize(sessionId, request);
     }
 
     @RequestMapping(value = "/payments/authorizations/{authorization_token}/order",

@@ -20,7 +20,7 @@ public abstract class MetricHandler<T> {
         this.prefix = prefix;
     }
 
-    protected abstract List<Metric> build(T event, Annotation annotation);
+    protected abstract List<Metric> process(T event, Annotation annotation);
 
     protected String decorateMetricName(String prefix, String metricName) {
         return isNullOrEmpty(prefix) ? metricName : format("{0}.{1}", prefix, metricName);

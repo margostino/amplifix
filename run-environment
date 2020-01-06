@@ -8,15 +8,21 @@ set_docker_host_ip
 
 sed -e "s/\${IP}/${DOCKERHOST}/" ./docker/prometheus/prometheus_template.yml > ./docker/prometheus/prometheus.yml
 sed -e "s/\${IP}/${DOCKERHOST}/" ./docker/grafana/datasources/datasources_template.yaml > ./docker/grafana/datasources/datasources.yaml
+sed -e "s/\${IP}/${DOCKERHOST}/" ./docker/nginx/default_template.conf > ./docker/nginx/default.conf
 
-services="grafana prometheus"
-docker-compose stop ${services}
+#services="grafana prometheus hazelcast-mgmt nginx"
+#docker-compose stop ${services}
 # Remove containers if they exist, if a new version exist there will be a name conflict if not removing them
-docker-compose rm -v --force ${services}
-docker-compose pull ${services}
-docker-compose up --build -d ${services}
+#docker-compose rm -v --force ${services}
+#docker-compose pull ${services}
+#docker-compose up --build -d ${services}
 
-sleep 10
+docker-compose stop $@
+docker-compose rm -v --force $@
+docker-compose pull $@
+docker-compose up -d $@
+
+#sleep 10
 
 # Import Datasource
 #curl -XPOST http://localhost:3000/api/datasources -u admin:admin -H "Content-Type: application/json" -H "Accept: application/json" -d @./datasources/prometheus.json | jq "."

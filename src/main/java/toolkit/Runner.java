@@ -9,14 +9,13 @@ import demo.model.PaymentMethodsRequest;
 import demo.model.PaymentMethodsResponse;
 import demo.model.SessionRequest;
 import demo.model.SessionResponse;
-import toolkit.eventbus.EventBusAdapter;
 
 @Deprecated
 public class Runner {
 
     public static void main(String[] args) {
 
-        EventBusAdapter eventBus = new EventBusAdapter(null);
+        Amplifix eventBus = new Amplifix(null);
         DemoService demoService = new DemoService(eventBus);
 
         SessionRequest sessionRequest = SessionRequest.builder()
@@ -33,7 +32,7 @@ public class Runner {
         AuthorizeRequest authorizeRequest = AuthorizeRequest.builder()
                                                             .selectedPaymentMethod("invoice")
                                                             .build();
-        AuthorizeResponse authorizeResponse = demoService.authorize(authorizeRequest);
+        AuthorizeResponse authorizeResponse = demoService.authorize(sessionResponse.sessionId, authorizeRequest);
 
         OrderRequest orderRequest = OrderRequest.builder()
                                                 .authorizedPaymentMethod(authorizeResponse.authorizedPaymentMethod)

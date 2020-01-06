@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: amplifix
+  name: amplifix
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: amplifix
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: amplifix
+    spec:
+      containers:
+        - image: amplifix:test
+          name: demo
+          resources: {}
+          ports:
+            - containerPort: 8082
+              name: server
+            - containerPort: 8083
+              name: health
+        - image: hazelcast/management-center:3.12.8
+          name: hazelcast-mgmt
+          resources: {}
+          ports:
+            - containerPort: 8080
+              name: server
+            - containerPort: 8081
+              name: health
+          env:
+          - name: JAVA_OPTS
+            value: "-Dhazelcast.mc.healthCheck.enable=true --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"
+          - name: MC_INIT_CMD
+            value: "./mc-conf.sh create-user -H=/data -n=amplifix -p=ampx2020 -r=admin -v"
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: demo
+  name: demo
+spec:
+  ports:
+  - name: http
+    port: 8082
+    protocol: TCP
+    targetPort: 8082
+  - name: management
+    port: 8083
+    protocol: TCP
+    targetPort: 8083
+  selector:
+    app: demo
+  selector:
+    app: demo
+  type: LoadBalancer
+status:
+  loadBalancer: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: hazelcast-mgmt
+  name: hazelcast-mgmt
+spec:
+  ports:
+  - name: 8080-8080
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  - name: 8081-8081
+    port: 8081
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    app: hazelcast-mgmt
+  type: ClusterIP
+status:
+  loadBalancer: {}

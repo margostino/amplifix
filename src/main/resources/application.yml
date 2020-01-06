@@ -10,12 +10,12 @@ spring:
 #    root: DEBUG
 
 server:
-  port: 8080
+  port: ${SERVICE_PORT}
   use-forward-headers: true
 
 management:
   server:
-    port: 8081
+    port: ${METRICS_PORT}
   endpoints:
     enabled-by-default: true
     web:

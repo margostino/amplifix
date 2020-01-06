@@ -1,10 +1,12 @@
 
+PORT=5000
+
 create_session() {
     local max=${1}
     local requests=$(( ( RANDOM % ${max} )  + 1 ))
     echo "Request for create session " ${requests}
     for ((i = 1; i <= ${requests}; i++ )); do
-      curl -X POST -H "Content-Type: application/json" -d @$AMPLIFIX_MOCKS_PATH/create_session.json http://localhost:8080/payments/sessions | jq ".";
+      curl -X POST -H "Content-Type: application/json" -d @$AMPLIFIX_MOCKS_PATH/create_session.json http://localhost:${PORT}/payments/sessions | jq ".";
     done
 }
 
@@ -13,7 +15,7 @@ payment_methods() {
     local requests=$(( ( RANDOM % ${max} )  + 1 ))
     echo "Request for create session " ${requests}
     for ((i = 1; i <= ${requests}; i++ )); do
-      curl -X GET -H -d http://localhost:8080/payments/sessions/mock.session.id/payment_methods | jq ".";
+      curl -X GET -H -d http://localhost:${PORT}/payments/sessions/mock.session.id/payment_methods | jq ".";
     done
 }
 
@@ -22,7 +24,7 @@ authorize() {
     local requests=$(( ( RANDOM % ${max} )  + 1 ))
     echo "Request for create session " ${requests}
     for ((i = 1; i <= ${requests}; i++ )); do
-      curl -X POST -H "Content-Type: application/json" -d @$AMPLIFIX_MOCKS_PATH/authorize.json http://localhost:8080/payments/sessions/mock.session.id/authorizations | jq ".";
+      curl -X POST -H "Content-Type: application/json" -d @$AMPLIFIX_MOCKS_PATH/authorize.json http://localhost:${PORT}/payments/sessions/mock.session.id/authorizations | jq ".";
     done
 }
 
@@ -31,7 +33,7 @@ create_order() {
     local requests=$(( ( RANDOM % ${max} )  + 1 ))
     echo "Request for create session " ${requests}
     for ((i = 1; i <= ${requests}; i++ )); do
-      curl -X POST -H "Content-Type: application/json" -d @$AMPLIFIX_MOCKS_PATH/create_order.json http://localhost:8080/payments/authorizations/mock.authorization.token/order | jq ".";
+      curl -X POST -H "Content-Type: application/json" -d @$AMPLIFIX_MOCKS_PATH/create_order.json http://localhost:${PORT}/payments/authorizations/mock.authorization.token/order | jq ".";
     done
 }
 

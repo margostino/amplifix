@@ -12,9 +12,16 @@ import static demo.model.PaymentMethodCategory.PAY_LATER;
 import static demo.model.PaymentMethodCategory.PAY_NOW;
 import static demo.model.Status.APPROVED;
 import static java.util.Arrays.asList;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static toolkit.util.MathUtils.getProbability;
 
-@Drop(metricName = "create_session_drop", field = "sessionId", event = "PaymentMethodsResponse")
+
+@Drop(metricName = "session_drop",
+      field = "sessionId",
+      event = "AuthorizeResponse",
+      ttl = 60,
+      timeUnit = SECONDS,
+      tags = { "country" })
 @Counter(metricName = "create_session", fields = {"paymentMethodCategories", "country"})
 public class SessionResponse {
 

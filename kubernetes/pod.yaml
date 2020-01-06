@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    app: amplifix
+  name: amplifix
+spec:
+  containers:
+    - image: amplifix:test
+      name: demo
+      resources: {}
+    - image: hazelcast/management-center:3.12.8
+      name: hazelcast-mgmt
+      resources: {}
+      env:
+      - name: JAVA_OPTS
+        value: "-Dhazelcast.mc.healthCheck.enable=true --add-modules java.se --add-exports java.base/jdk.internal.ref=ALL-UNNAMED --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.nio=ALL-UNNAMED --add-opens java.base/sun.nio.ch=ALL-UNNAMED --add-opens java.management/sun.management=ALL-UNNAMED --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED"
+      - name: MC_INIT_CMD
+        value: "./mc-conf.sh create-user -H=/data -n=amplifix -p=ampx2020 -r=admin -v"

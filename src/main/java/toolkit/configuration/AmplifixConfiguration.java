@@ -2,14 +2,14 @@ package toolkit.configuration;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import toolkit.metric.MetricBuilder;
 
 import java.util.List;
 
 @AllArgsConstructor
 @Data
-public class MetricConfiguration {
+public class AmplifixConfiguration {
 
     public List<String> commonTags;
-    public MetricBuilder metricBuilder;
+    public String prefixMetric = "amplifix";
+    public int nThreads = 10;
 }

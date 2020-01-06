@@ -7,24 +7,24 @@ import demo.model.OrderResponse;
 import demo.model.PaymentMethodsResponse;
 import demo.model.SessionRequest;
 import demo.model.SessionResponse;
-import toolkit.eventbus.EventBusAdapter;
+import toolkit.Amplifix;
 
 import static demo.model.Status.APPROVED;
 import static java.time.Instant.now;
 
 public class DemoService {
 
-    private EventBusAdapter eventBus;
+    private Amplifix amplifix;
 
-    public DemoService(EventBusAdapter eventBus) {
-        this.eventBus = eventBus;
+    public DemoService(Amplifix amplifix) {
+        this.amplifix = amplifix;
     }
 
     public SessionResponse createSession(SessionRequest request) {
         //EventSerializer serializer = new EventSerializer();
         //eventBus.post(serializer.serialize(new Event(request)));
         SessionResponse response = new SessionResponse(request.description, request.country, now());
-        eventBus.post(response);
+        amplifix.post(response);
         return response;
     }
 
@@ -32,7 +32,7 @@ public class DemoService {
         return new PaymentMethodsResponse(sessionId);
     }
 
-    public AuthorizeResponse authorize(AuthorizeRequest request) {
+    public AuthorizeResponse authorize(String sessionId, AuthorizeRequest request) {
         return new AuthorizeResponse(request.selectedPaymentMethod, APPROVED);
     }
 

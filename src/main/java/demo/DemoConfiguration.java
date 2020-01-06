@@ -6,10 +6,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import toolkit.configuration.MetricConfiguration;
-import toolkit.eventbus.EventBusAdapter;
+import toolkit.Amplifix;
 import toolkit.metric.CounterRegistry;
-import toolkit.metric.MetricBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,21 +36,21 @@ public class DemoConfiguration {
     }
 
     // Custom Bean with Configuration
-    @Bean
-    public DemoService createApiService(MeterRegistry meterRegistry, @Qualifier("common_tags") List<String> tags) {
-        CounterRegistry counterRegistry = new CounterRegistry(meterRegistry);
-        MetricBuilder metricBuilder = new MetricBuilder("demo.amplifix");
-        MetricConfiguration metricConfiguration = new MetricConfiguration(tags, metricBuilder);
-        EventBusAdapter eventBus = new EventBusAdapter(counterRegistry, metricConfiguration);
-        return new DemoService(eventBus);
-    }
-
-    // Custom Bean without Configuration
 //    @Bean
-//    public DemoService createApiService(MeterRegistry meterRegistry) {
+//    public DemoService createApiService(MeterRegistry meterRegistry, @Qualifier("common_tags") List<String> tags) {
 //        CounterRegistry counterRegistry = new CounterRegistry(meterRegistry);
-//        EventBusAdapter eventBus = new EventBusAdapter(counterRegistry);
+//        MetricBuilder metricBuilder = new MetricBuilder("demo.amplifix");
+//        AmplifixConfiguration metricConfiguration = new AmplifixConfiguration(tags, metricBuilder);
+//        Amplifix eventBus = new Amplifix(counterRegistry, metricConfiguration);
 //        return new DemoService(eventBus);
 //    }
+
+    // Custom Bean without Configuration
+    @Bean
+    public DemoService createApiService(MeterRegistry meterRegistry) {
+        CounterRegistry counterRegistry = new CounterRegistry(meterRegistry);
+        Amplifix amplifix = new Amplifix(counterRegistry);
+        return new DemoService(amplifix);
+    }
 
 }
