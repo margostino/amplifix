@@ -8,6 +8,7 @@ import toolkit.datagrid.DataGridClient;
 import toolkit.datagrid.DataGridNode;
 import toolkit.datagrid.DropRegistry;
 import toolkit.datagrid.DropRegistryListener;
+import toolkit.eventbus.ConversionEvent;
 import toolkit.eventbus.EventListener;
 import toolkit.metric.CounterRegistry;
 import toolkit.metric.MetricBuilder;
@@ -16,7 +17,7 @@ import toolkit.scheduler.SchedulerExecutor;
 
 import static java.util.concurrent.Executors.newFixedThreadPool;
 
-public class Amplifix<T> {
+public class Amplifix<T, E> {
 
     private EventBus eventBus;
     private EventListener listener;
@@ -52,4 +53,7 @@ public class Amplifix<T> {
         eventBus.post(event);
     }
 
+    public void post(T event, E conversionKey) {
+        eventBus.post(new ConversionEvent(conversionKey.toString(), event));
+    }
 }

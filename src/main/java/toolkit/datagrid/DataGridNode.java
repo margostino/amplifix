@@ -45,6 +45,10 @@ public class DataGridNode {
         dataGrid.put(key, dropRegistry, ttl, timeUnit);
     }
 
+    public void remove(String key) {
+        dataGrid.remove(key);
+    }
+
     public String addEntryListener(EntryListener mapListener) {
         return dataGrid.addEntryListener(mapListener);
     }

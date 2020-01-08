@@ -89,7 +89,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (payment_method_categories, country) (rate(amplifix_create_session_total{environment=\"dev\",host=\"my_host\", service=\"demo\"}[5m]))",
+          "expr": "sum by (country) (rate(amplifix_session_drop_total{environment=\"dev\",service=\"demo\"}[5m])) ",
           "refId": "A"
         }
       ],
@@ -161,7 +161,7 @@
     ]
   },
   "timezone": "",
-  "title": "Create Session",
+  "title": "Drop Session",
   "uid": null,
   "version": 1
 }

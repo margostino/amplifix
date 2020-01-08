@@ -1,9 +1,45 @@
 #!/bin/sh
 
+build() {
+    export BUILD_VERSION=test
+    docker image rm amplifix:test -f
+    ./bin/amplifix build --service-port 8880 --metrics-port 8881
+}
+
 set_docker_host_ip() {
     export DOCKERHOST=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)
 }
 
+process_arguments() {
+
+    # Transform long options to short ones
+    for arg in "$@"; do
+      shift
+      case "$arg" in
+        "--re-build")
+            set -- "$@" "-x"
+            ;;
+        *)
+            set -- "$@" "$arg"
+            ;;
+      esac
+    done
+
+    while getopts ":x" opt; do
+        case ${opt} in
+            x)
+                build
+                ;;
+            \?)
+                echo "Invalid option: -${OPTARG}!"
+                usage
+                ;;
+        esac
+    done
+
+}
+
+process_arguments "${@}"
 set_docker_host_ip
 
 sed -e "s/\${IP}/${DOCKERHOST}/" ./docker/prometheus/prometheus_template.yml > ./docker/prometheus/prometheus.yml
@@ -17,6 +53,8 @@ sed -e "s/\${IP}/${DOCKERHOST}/" ./docker/nginx/default_template.conf > ./docker
 #docker-compose pull ${services}
 #docker-compose up --build -d ${services}
 
+docker stop amplifix_server_1
+docker stop amplifix_server_2
 docker-compose stop $@
 docker-compose rm -v --force $@
 docker-compose pull $@
@@ -29,3 +67,8 @@ docker-compose up -d $@
 
 # Import Dashboard
 #curl -XPOST http://localhost:3000/api/dashboards/import -u admin:admin -H "Content-Type: application/json" -H "Accept: application/json" -d @./dashboards/demo_create_session.json
+
+
+# Scale to 2 instances (TODO: make generic and automate)
+docker run -d --name amplifix_server_1 --rm -e HZ_HOST=${DOCKERHOST} -p 5001:8880 -p 5002:8881 -i -t amplifix:test
+docker run -d --name amplifix_server_2 --rm -e HZ_HOST=${DOCKERHOST} -p 5003:8880 -p 5004:8881 -i -t amplifix:test

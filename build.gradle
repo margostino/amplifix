@@ -9,7 +9,7 @@ apply plugin: "org.springframework.boot"
 apply plugin: "io.spring.dependency-management"
 
 group = 'org.amplifix'
-version = "${buildVersion}" != "" ? "${buildVersion}" : "SNAPSHOT"
+version = "${buildVersion}" != "" ? "${buildVersion}" : "test"
 sourceCompatibility = 1.8
 
 wrapper {

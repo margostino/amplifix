@@ -4,26 +4,30 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import toolkit.annotation.Counter;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
+import static toolkit.util.GenericsUtils.getField;
+import static toolkit.util.GenericsUtils.isList;
+import static toolkit.util.MetricUtils.decorateMetricName;
+import static toolkit.util.MetricUtils.getTagKey;
 
 
 @Slf4j
-public class CounterHandler<T> extends MetricHandler<T> {
+public class CounterHandler<T> {
+
+    public final String prefix;
 
     public CounterHandler(String prefix) {
-        super(prefix);
+        this.prefix = prefix;
     }
 
-    public List<Metric> process(T event, Annotation annotation) {
-        Counter annotationCounter = (Counter) annotation;
-        String metricName = decorateMetricName(prefix, annotationCounter.metricName());
-        List<String> fieldNames = asList(annotationCounter.fields());
+    public List<Metric> process(T event, Counter annotation) {
+        String metricName = decorateMetricName(prefix, annotation.metricName());
+        List<String> fieldNames = asList(annotation.fields());
 
         List<Field> fields = fieldNames.stream()
                                        .map(fieldName -> getField(event, fieldName))

@@ -33,7 +33,9 @@ public class DemoService {
     }
 
     public AuthorizeResponse authorize(String sessionId, AuthorizeRequest request) {
-        return new AuthorizeResponse(request.selectedPaymentMethod, APPROVED);
+        AuthorizeResponse response = new AuthorizeResponse(request.selectedPaymentMethod, APPROVED);
+        amplifix.post(response, sessionId);
+        return response;
     }
 
     public OrderResponse createOrder(OrderRequest request) {
