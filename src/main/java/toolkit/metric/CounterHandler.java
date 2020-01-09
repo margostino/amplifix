@@ -1,6 +1,5 @@
 package toolkit.metric;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import toolkit.annotation.Counter;
 
@@ -10,10 +9,8 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
-import static toolkit.util.GenericsUtils.getField;
-import static toolkit.util.GenericsUtils.isList;
+import static toolkit.util.GenericsUtils.getFields;
 import static toolkit.util.MetricUtils.decorateMetricName;
-import static toolkit.util.MetricUtils.getTagKey;
 
 
 @Slf4j
@@ -29,75 +26,49 @@ public class CounterHandler<T> {
         String metricName = decorateMetricName(prefix, annotation.metricName());
         List<String> fieldNames = asList(annotation.fields());
 
-        List<Field> fields = fieldNames.stream()
-                                       .map(fieldName -> getField(event, fieldName))
-                                       .collect(toList());
+        List<Field> fields = getFields(event, fieldNames);
 
-        List<String> simpleTags = fields.stream()
-                                        .filter(field -> !isList(event, field))
-                                        .map(field -> processSimpleTags(event, field))
-                                        .flatMap(List::stream)
-                                        .collect(toList());
-
-
-        List<Tag> nestedTags = fields.stream()
-                                     .filter(field -> isList(event, field))
-                                     .map(field -> processNestedTags(event, field))
-                                     .flatMap(List::stream)
+        List<TagMap> tagMaps = fields.stream()
+                                     .map(field -> TagMap.of(field).from(event).build())
                                      .collect(toList());
 
-        List<Metric> metrics = nestedTags.stream()
-                                         .map(nestedTag -> processTags(metricName, simpleTags, nestedTag))
+        List<TagMap> simpleTags = tagMaps.stream()
+                                         .filter(tagMap -> tagMap.values.size() == 1)
                                          .collect(toList());
 
-        return metrics;
+        List<TagMap> multiTags = tagMaps.stream()
+                                        .filter(tagMap -> tagMap.values.size() > 1)
+                                        .collect(toList());
+
+        List<String> baseTags = simpleTags.stream()
+                                          .map(this::getSimpleTags)
+                                          .flatMap(List::stream)
+                                          .collect(toList());
+
+        return multiTags.stream()
+                        .map(tagMap -> getMultiTags(metricName, baseTags, tagMap))
+                        .flatMap(List::stream)
+                        .collect(toList());
+
     }
 
-    private List<String> processSimpleTags(T event, Field field) {
-        String key = getTagKey(field);
-        String value;
+    public List<Metric> getMultiTags(String metricName, List<String> baseTags, TagMap tagMap) {
+        return tagMap.values().stream()
+                     .map(value -> {
+                         List<String> tags = new ArrayList<>();
+                         tags.addAll(baseTags);
+                         tags.add(tagMap.key);
+                         tags.add(value);
+                         return new Metric(metricName, tags);
+                     })
+                     .collect(toList());
+    }
+
+    private List<String> getSimpleTags(TagMap tagMap) {
         List<String> tags = new ArrayList<>();
-
-        try {
-            value = ((String) field.get(event));
-        } catch (IllegalAccessException e) {
-            value = null;
-        }
-        tags.add(key);
-        tags.add(value);
+        tags.add(tagMap.key());
+        tags.add(tagMap.values().get(0));
         return tags;
-    }
-
-    private List<Tag> processNestedTags(T event, Field field) {
-        String key = getTagKey(field);
-        List<Tag> tags = new ArrayList<>();
-
-        try {
-            List<Object> values = (List) field.get(event);
-            tags = values.stream()
-                         .map(value -> value.toString())
-                         .map(value -> new Tag(key, value))
-                         .collect(toList());
-
-        } catch (IllegalAccessException e) {
-            // TODO
-        }
-
-        return tags;
-    }
-
-    private Metric processTags(String metricName, List<String> simpleTags, Tag nestedTag) {
-        List<String> tags = new ArrayList<>();
-        tags.addAll(simpleTags);
-        tags.add(nestedTag.key);
-        tags.add(nestedTag.value);
-        return new Metric(metricName, tags.stream().map(String::toLowerCase).collect(toList()));
-    }
-
-    @AllArgsConstructor
-    public class Tag {
-        public String key;
-        public String value;
     }
 
 }

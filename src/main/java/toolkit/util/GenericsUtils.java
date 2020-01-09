@@ -5,6 +5,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 public class GenericsUtils {
 
     public static Field getField(Object event, String fieldName) {
@@ -29,4 +31,11 @@ public class GenericsUtils {
         Type genericFieldType = field.getGenericType();
         return isInstance(event, field, List.class) && genericFieldType instanceof ParameterizedType;
     }
+
+    public static List<Field> getFields(Object event, List<String> fieldNames) {
+        return fieldNames.stream()
+                         .map(fieldName -> getField(event, fieldName))
+                         .collect(toList());
+    }
+
 }

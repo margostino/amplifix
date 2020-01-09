@@ -13,7 +13,6 @@ import static demo.model.PaymentMethodCategory.PAY_NOW;
 import static demo.model.Status.APPROVED;
 import static java.util.Arrays.asList;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static toolkit.util.MathUtils.getProbability;
 
 
 @Drop(metricName = "session_drop",
@@ -41,15 +40,15 @@ public class SessionResponse {
         this.country = country;
         this.status = APPROVED;
 
-        //this.paymentMethodCategories = asList(PAY_NOW, PAY_LATER);
-        int probability = getProbability();
-        if (probability <= 10) {
-            this.paymentMethodCategories = asList(PAY_NOW, PAY_LATER);
-        } else if (probability <= 65) {
-            this.paymentMethodCategories = asList(PAY_NOW);
-        } else {
-            this.paymentMethodCategories = asList(PAY_LATER);
-        }
+        this.paymentMethodCategories = asList(PAY_NOW, PAY_LATER);
+//        int probability = getProbability();
+//        if (probability <= 10) {
+//            this.paymentMethodCategories = asList(PAY_NOW, PAY_LATER);
+//        } else if (probability <= 65) {
+//            this.paymentMethodCategories = asList(PAY_NOW);
+//        } else {
+//            this.paymentMethodCategories = asList(PAY_LATER);
+//        }
 
     }
 
