@@ -1,0 +1,340 @@
+{
+	"info": {
+		"_postman_id": "5f6809c2-a57e-4e7c-b983-0ea83ab11f7c",
+		"name": "amplifix",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create session",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d447444a-51bb-4429-a64c-0852ff3b1758",
+						"exec": [
+							"session_id = pm.response.json().session_id;",
+							"pm.environment.set(\"session_id\", session_id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"country\": \"GB\",\n\t\"description\": \"demo payment session\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/payments/sessions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"payments",
+						"sessions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create session (load balancer)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d447444a-51bb-4429-a64c-0852ff3b1758",
+						"exec": [
+							"session_id = pm.response.json().session_id;",
+							"pm.environment.set(\"session_id\", session_id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"country\": \"GB\",\n\t\"description\": \"demo payment session\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/payments/sessions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"payments",
+						"sessions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create session (kubernetes)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d447444a-51bb-4429-a64c-0852ff3b1758",
+						"exec": [
+							"session_id = pm.response.json().session_id;",
+							"pm.environment.set(\"session_id\", session_id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"country\": \"GB\",\n\t\"description\": \"demo payment session\"\n}"
+				},
+				"url": {
+					"raw": "http://10.96.50.220:31199/payments/sessions",
+					"protocol": "http",
+					"host": [
+						"10",
+						"96",
+						"50",
+						"220"
+					],
+					"port": "31199",
+					"path": [
+						"payments",
+						"sessions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "authorize",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d447444a-51bb-4429-a64c-0852ff3b1758",
+						"exec": [
+							"authorization_token = pm.response.json().authorization_token;",
+							"pm.environment.set(\"authorization_token\", authorization_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"selected_payment_method\": \"invoice\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/payments/sessions/{{session_id}}/authorizations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"payments",
+						"sessions",
+						"{{session_id}}",
+						"authorizations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d447444a-51bb-4429-a64c-0852ff3b1758",
+						"exec": [
+							"session_id = pm.response.json().session_id;",
+							"pm.environment.set(\"session_id\", session_id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"authorized_payment_method\": \"invoice\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8082/payments/authorizations/{{authorization_token}}/order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"payments",
+						"authorizations",
+						"{{authorization_token}}",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "payment methods",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/payments/sessions/{{session_id}}/payment_methods",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"payments",
+						"sessions",
+						"{{session_id}}",
+						"payment_methods"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "payment methods (not found)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/payments/sessions/fake/payment_methods",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"payments",
+						"sessions",
+						"fake",
+						"payment_methods"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "payment methods (kubernetes)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://10.96.50.220:31199/payments/sessions/{{session_id}}/payment_methods",
+					"protocol": "http",
+					"host": [
+						"10",
+						"96",
+						"50",
+						"220"
+					],
+					"port": "31199",
+					"path": [
+						"payments",
+						"sessions",
+						"{{session_id}}",
+						"payment_methods"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
