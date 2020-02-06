@@ -1,24 +1,32 @@
 package toolkit.metric;
 
 import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.Meter;
+import io.micrometer.core.instrument.Metrics;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Component
 public class MetricSender {
 
-    private CounterRegistry registry;
+    private CounterRegistry counter;
+    private GaugeRegistry gauge;
 
-    public MetricSender(CounterRegistry registry) {
-        this.registry = registry;
+    public MetricSender() {
+        this.counter = new CounterRegistry();
+        this.gauge = new GaugeRegistry();
     }
 
-    public List<Counter> send(List<Metric> metrics) {
-        return metrics.stream()
-                      .map(registry::increment)
-                      .collect(toList());
+    public void send(Meter meter) {
+        //gauge.update(metrics.get(0));
+
+//        metrics.stream()
+//               .map(this::getCounter)
+//               .forEach(counter -> counter.increment());
+        return;
     }
+
+    private Counter getCounter(Metric metric) {
+        return Metrics.counter(metric.name(), metric.getTags());
+    }
+
 }

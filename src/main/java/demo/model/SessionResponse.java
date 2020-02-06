@@ -18,7 +18,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 @Drop(metricName = "session_drop",
       field = "sessionId",
       event = "AuthorizeResponse",
-      ttl = 60,
+      ttl = 10,
       timeUnit = SECONDS,
       tags = { "country" })
 @Counter(metricName = "create_session", fields = {"paymentMethodCategories", "country"})

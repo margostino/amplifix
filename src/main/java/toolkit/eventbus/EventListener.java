@@ -1,8 +1,8 @@
 package toolkit.eventbus;
 
 import com.google.common.eventbus.Subscribe;
+import io.micrometer.core.instrument.Meter;
 import lombok.extern.slf4j.Slf4j;
-import toolkit.metric.Metric;
 import toolkit.metric.MetricBuilder;
 import toolkit.metric.MetricSender;
 
@@ -21,8 +21,8 @@ public class EventListener<T> {
 
     @Subscribe
     public void listen(T event) {
-        final List<Metric> metrics = metricBuilder.build(event);
-        metricSender.send(metrics);
+        List<Meter> meters = metricBuilder.build(event);
+        meters.stream().forEach(metricSender::send);
     }
 
 }

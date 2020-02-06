@@ -7,7 +7,6 @@ import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCusto
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import toolkit.Amplifix;
-import toolkit.metric.CounterRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +46,8 @@ public class DemoConfiguration {
 
     // Custom Bean without Configuration
     @Bean
-    public DemoService createApiService(MeterRegistry meterRegistry) {
-        CounterRegistry counterRegistry = new CounterRegistry(meterRegistry);
-        Amplifix amplifix = new Amplifix(counterRegistry);
+    public DemoService createApiService() {
+        Amplifix amplifix = new Amplifix();
         return new DemoService(amplifix);
     }
 

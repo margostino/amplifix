@@ -1,23 +1,12 @@
 package toolkit.metric;
 
 import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
-import org.springframework.stereotype.Component;
+import io.micrometer.core.instrument.Metrics;
 
-@Component
 public class CounterRegistry {
 
-    private MeterRegistry registry;
-
-    public CounterRegistry(MeterRegistry registry) {
-        this.registry = registry;
-    }
-
     public Counter increment(Metric metric) {
-        Counter counter = Counter
-                .builder(metric.name())
-                .tags(metric.getTags())
-                .register(this.registry);
+        Counter counter = Metrics.counter(metric.name(), metric.getTags());
         counter.increment();
         return counter;
     }

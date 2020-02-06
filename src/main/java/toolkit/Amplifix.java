@@ -9,7 +9,6 @@ import toolkit.datagrid.DropRegistry;
 import toolkit.datagrid.DropRegistryListener;
 import toolkit.eventbus.ConversionEvent;
 import toolkit.eventbus.EventListener;
-import toolkit.metric.CounterRegistry;
 import toolkit.metric.MetricBuilder;
 import toolkit.metric.MetricSender;
 
@@ -24,22 +23,21 @@ public class Amplifix<T, E> {
     /**
      * Main Toolkit Class
      *
-     * @param counterRegistry
      * @param configuration
      */
-    public Amplifix(CounterRegistry counterRegistry, AmplifixConfiguration configuration) {
-        initialize(configuration.nThreads, configuration.prefixMetric, counterRegistry);
+    public Amplifix(AmplifixConfiguration configuration) {
+        initialize(configuration.nThreads, configuration.prefixMetric);
     }
 
-    public Amplifix(CounterRegistry counterRegistry) {
-        initialize(10, "amplifix", counterRegistry);
+    public Amplifix() {
+        initialize(10, "amplifix");
     }
 
-    private void initialize(int nThreads, String prefix, CounterRegistry counterRegistry) {
+    private void initialize(int nThreads, String prefix) {
         this.eventBus = new AsyncEventBus(newFixedThreadPool(nThreads));
         this.dataGridNode = new DataGridNode();
         //this.schedulerExecutor = new SchedulerExecutor(new DataGridClient());
-        this.listener = new EventListener(new MetricSender(counterRegistry), new MetricBuilder(prefix, dataGridNode));
+        this.listener = new EventListener(new MetricSender(), new MetricBuilder(prefix, dataGridNode));
         this.eventBus.register(listener);
         EntryListener mapListener = new DropRegistryListener<String, DropRegistry>(eventBus);
         this.dataGridNode.addEntryListener(mapListener);

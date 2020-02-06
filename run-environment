@@ -42,9 +42,9 @@ process_arguments() {
 process_arguments "${@}"
 set_docker_host_ip
 
-sed -e "s/\${IP}/${DOCKERHOST}/" ./docker/prometheus/prometheus_template.yml > ./docker/prometheus/prometheus.yml
-sed -e "s/\${IP}/${DOCKERHOST}/" ./docker/grafana/datasources/datasources_template.yaml > ./docker/grafana/datasources/datasources.yaml
-sed -e "s/\${IP}/${DOCKERHOST}/" ./docker/nginx/default_template.conf > ./docker/nginx/default.conf
+sed -e "s/\${IP}/${DOCKERHOST}/g" ./docker/prometheus/prometheus_template.yml > ./docker/prometheus/prometheus.yml
+sed -e "s/\${IP}/${DOCKERHOST}/g" ./docker/grafana/datasources/datasources_template.yaml > ./docker/grafana/datasources/datasources.yaml
+sed -e "s/\${IP}/${DOCKERHOST}/g" ./docker/nginx/default_template.conf > ./docker/nginx/default.conf
 
 #services="grafana prometheus hazelcast-mgmt nginx"
 #docker-compose stop ${services}
@@ -69,6 +69,6 @@ docker-compose up -d $@
 #curl -XPOST http://localhost:3000/api/dashboards/import -u admin:admin -H "Content-Type: application/json" -H "Accept: application/json" -d @./dashboards/demo_create_session.json
 
 
-# Scale to 2 instances (TODO: make generic and automate)
+# Scale to 2 instances (TODO: make generic and automate. Using docker-compose up --scale)
 docker run -d --name amplifix_server_1 --rm -e HZ_HOST=${DOCKERHOST} -p 5001:8880 -p 5002:8881 -i -t amplifix:test
 docker run -d --name amplifix_server_2 --rm -e HZ_HOST=${DOCKERHOST} -p 5003:8880 -p 5004:8881 -i -t amplifix:test

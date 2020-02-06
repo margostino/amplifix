@@ -1,5 +1,6 @@
 package toolkit.datagrid;
 
+import io.micrometer.core.instrument.Tag;
 import lombok.AllArgsConstructor;
 import toolkit.annotation.DropRegistryControl;
 
@@ -14,7 +15,7 @@ public class DropRegistry implements Serializable {
     public String metricName;
     public String key;
     public String value;
-    public List<String> tags;
+    public List<Tag> tags;
     public String event;
     public Instant timestamp;
 

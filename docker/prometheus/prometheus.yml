@@ -23,4 +23,4 @@ scrape_configs:
     metrics_path: '/metrics'
     scrape_interval: 5s
     static_configs:
-      - targets: ['192.168.0.7:5002', '${IP}:5004']
+      - targets: ['192.168.0.6:5002', '192.168.0.6:5004', '192.168.0.6:8083']
