@@ -60,8 +60,6 @@ spec:
     targetPort: 8083
   selector:
     app: demo
-  selector:
-    app: demo
   type: LoadBalancer
 status:
   loadBalancer: {}

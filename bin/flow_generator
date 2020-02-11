@@ -1,5 +1,7 @@
 
 PORT=5000
+# For Kubernetes:
+#PORT=8082
 
 # $AMPLIFIX_MOCKS_PATH = /Users/martin.dagostino/workspace/amplifix/src/test/resources
 

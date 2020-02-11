@@ -1,5 +1,26 @@
 #!/bin/sh
 
+DOCKER_PROJECT_NAME='amplifix'
+
+remove_container_if_exists() {
+    local name=${1}
+    if [ "$(docker ps -q -f name=${name})" ]; then
+        #docker stop ${name}
+        docker rm -f /${name}
+    fi
+}
+
+docker_compose_up() {
+    docker-compose pull
+    docker-compose up -d
+}
+
+docker_compose_down() {
+    docker-compose -f docker-compose.yml --project-name ${DOCKER_PROJECT_NAME} down -v || true
+    docker-compose -f docker-compose.yml --project-name ${DOCKER_PROJECT_NAME} rm --force || true
+    docker rm "$(docker ps -a -q)" -f || true
+}
+
 build() {
     export BUILD_VERSION=test
     docker image rm amplifix:test -f
@@ -16,7 +37,7 @@ process_arguments() {
     for arg in "$@"; do
       shift
       case "$arg" in
-        "--re-build")
+        "--build")
             set -- "$@" "-x"
             ;;
         *)
@@ -46,19 +67,8 @@ sed -e "s/\${IP}/${DOCKERHOST}/g" ./docker/prometheus/prometheus_template.yml > 
 sed -e "s/\${IP}/${DOCKERHOST}/g" ./docker/grafana/datasources/datasources_template.yaml > ./docker/grafana/datasources/datasources.yaml
 sed -e "s/\${IP}/${DOCKERHOST}/g" ./docker/nginx/default_template.conf > ./docker/nginx/default.conf
 
-#services="grafana prometheus hazelcast-mgmt nginx"
-#docker-compose stop ${services}
-# Remove containers if they exist, if a new version exist there will be a name conflict if not removing them
-#docker-compose rm -v --force ${services}
-#docker-compose pull ${services}
-#docker-compose up --build -d ${services}
-
-docker stop amplifix_server_1
-docker stop amplifix_server_2
-docker-compose stop $@
-docker-compose rm -v --force $@
-docker-compose pull $@
-docker-compose up -d $@
+docker_compose_down
+docker_compose_up
 
 #sleep 10
 
@@ -70,5 +80,7 @@ docker-compose up -d $@
 
 
 # Scale to 2 instances (TODO: make generic and automate. Using docker-compose up --scale)
+remove_container_if_exists amplifix_server_1
+remove_container_if_exists amplifix_server_2
 docker run -d --name amplifix_server_1 --rm -e HZ_HOST=${DOCKERHOST} -p 5001:8880 -p 5002:8881 -i -t amplifix:test
 docker run -d --name amplifix_server_2 --rm -e HZ_HOST=${DOCKERHOST} -p 5003:8880 -p 5004:8881 -i -t amplifix:test
