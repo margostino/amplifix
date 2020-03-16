@@ -1,4 +1,4 @@
-package toolkit.eventfilter;
+package toolkit.filter;
 
 import toolkit.annotation.Counter;
 

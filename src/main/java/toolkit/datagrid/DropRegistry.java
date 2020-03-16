@@ -1,22 +1,37 @@
 package toolkit.datagrid;
 
-import io.micrometer.core.instrument.Tag;
-import lombok.AllArgsConstructor;
-import toolkit.annotation.DropRegistryControl;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import toolkit.annotation.DropRegister;
+import toolkit.metric.TagSerializable;
 
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 
-@DropRegistryControl
-@AllArgsConstructor
+@DropRegister
 public class DropRegistry implements Serializable {
 
+    @JsonProperty("metric_name")
     public String metricName;
     public String key;
     public String value;
-    public List<Tag> tags;
+    public List<TagSerializable> tags;
     public String event;
     public Instant timestamp;
 
+    @JsonCreator
+    public DropRegistry(@JsonProperty("metric_name") String metricName,
+                        @JsonProperty("key") String key,
+                        @JsonProperty("value") String value,
+                        @JsonProperty("tags") List<TagSerializable> tags,
+                        @JsonProperty("event") String event,
+                        @JsonProperty("timestamp") Instant timestamp) {
+        this.metricName = metricName;
+        this.key = key;
+        this.value = value;
+        this.tags = tags;
+        this.event = event;
+        this.timestamp = timestamp;
+    }
 }

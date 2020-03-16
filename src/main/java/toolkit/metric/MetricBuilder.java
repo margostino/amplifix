@@ -4,11 +4,12 @@ import io.micrometer.core.instrument.Meter;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import toolkit.datagrid.DataGridNode;
-import toolkit.eventprocessor.ConversionProcessor;
-import toolkit.eventprocessor.CounterProcessor;
-import toolkit.eventprocessor.DropProcessor;
-import toolkit.eventprocessor.EventProcessor;
-import toolkit.eventprocessor.RegisterProcessor;
+import toolkit.eventbus.Event;
+import toolkit.processor.ConversionProcessor;
+import toolkit.processor.CounterProcessor;
+import toolkit.processor.DropProcessor;
+import toolkit.processor.EventProcessor;
+import toolkit.processor.RegisterProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class MetricBuilder<E> {
         processors.add(new DropProcessor(this.prefix));
     }
 
-    public List<Meter> build(E event) {
+    public List<Meter> build(Event event) {
 
         Stream<Meter> stream = processors.stream()
                                          .map(processor -> processor.process(event))

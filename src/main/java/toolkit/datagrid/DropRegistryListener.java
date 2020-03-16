@@ -1,17 +1,17 @@
 package toolkit.datagrid;
 
-import com.google.common.eventbus.EventBus;
 import com.hazelcast.core.EntryEvent;
 import com.hazelcast.core.EntryListener;
 import com.hazelcast.core.MapEvent;
 import lombok.extern.slf4j.Slf4j;
+import toolkit.eventbus.AmplifixEventBus;
 
 @Slf4j
 public class DropRegistryListener<K, V> implements EntryListener<K, V> {
 
-    private EventBus eventBus;
+    private AmplifixEventBus eventBus;
 
-    public DropRegistryListener(EventBus eventBus) {
+    public DropRegistryListener(AmplifixEventBus eventBus) {
         this.eventBus = eventBus;
     }
 
@@ -53,7 +53,7 @@ public class DropRegistryListener<K, V> implements EntryListener<K, V> {
      */
     public void onEvictedEntryEvent(EntryEvent<K, V> event) {
         DropRegistry dropRegistry = (DropRegistry) event.getOldValue();
-        eventBus.post(dropRegistry);
+        eventBus.send(dropRegistry);
         LOG.info("Drop Object from DataGrid");
     }
 }

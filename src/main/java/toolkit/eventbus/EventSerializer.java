@@ -19,7 +19,7 @@ public class EventSerializer extends StdSerializer<Event> {
     @Override
     public void serialize(Event event, JsonGenerator jsonGenerator, SerializerProvider serializer) throws IOException {
         jsonGenerator.writeStartObject();
-        jsonGenerator.writeStringField("country", event.raw);
+        //jsonGenerator.writeStringField("country", event.data.encode());
         jsonGenerator.writeEndObject();
     }
 

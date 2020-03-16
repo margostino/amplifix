@@ -1,6 +1,7 @@
-package toolkit.eventfilter;
+package toolkit.filter;
 
 import lombok.AllArgsConstructor;
+import toolkit.metadatareader.MetricAnnotation;
 
 import java.lang.annotation.Annotation;
 
@@ -9,8 +10,8 @@ public class EventFilter<E, A extends Annotation> {
 
     protected Class<A> annotationClass;
 
-    public boolean filter(Annotation annotation) {
-        return annotation.annotationType() == annotationClass;
+    public boolean filter(MetricAnnotation metricAnnotation) {
+        return false;//annotation.annotationType() == annotationClass;
     }
 
     public A getAnnotation(E event) {

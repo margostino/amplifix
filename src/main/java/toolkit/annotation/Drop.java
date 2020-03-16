@@ -9,6 +9,9 @@ import java.util.concurrent.TimeUnit;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Drop {
+
+    String id() default "drop";
+
     String metricName() default "";
 
     String field() default "";

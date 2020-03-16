@@ -5,6 +5,8 @@ import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Metrics;
 import org.springframework.stereotype.Component;
 
+import static io.micrometer.core.instrument.Meter.Type.COUNTER;
+
 @Component
 public class MetricSender {
 
@@ -22,7 +24,10 @@ public class MetricSender {
 //        metrics.stream()
 //               .map(this::getCounter)
 //               .forEach(counter -> counter.increment());
-        return;
+
+        if (meter.getId().getType().equals(COUNTER)) {
+            ((Counter) meter).increment();
+        }
     }
 
     private Counter getCounter(Metric metric) {

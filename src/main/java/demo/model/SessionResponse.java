@@ -16,12 +16,12 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 
 @Drop(metricName = "session_drop",
-      field = "sessionId",
+      field = "session_id",
       event = "AuthorizeResponse",
       ttl = 10,
       timeUnit = SECONDS,
       tags = { "country" })
-@Counter(metricName = "create_session", fields = {"paymentMethodCategories", "country"})
+@Counter(metricName = "create_session", fields = {"payment_method_categories", "country"})
 public class SessionResponse {
 
     @JsonProperty("session_id")
@@ -30,7 +30,7 @@ public class SessionResponse {
     public final Instant created;
     public final String country;
     public final Status status;
-    @JsonProperty("payment_methods_categories")
+    @JsonProperty("payment_method_categories")
     public final List<PaymentMethodCategory> paymentMethodCategories;
 
     public SessionResponse(String description, String country, Instant created) {

@@ -8,8 +8,9 @@ services:
     volumes:
       - ./docker/grafana/datasources/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
       - ./docker/grafana/dashboards/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
-      - ./docker/grafana/dashboards/create_session.json:/etc/grafana/provisioning/dashboards/create_session.json
-      - ./docker/grafana/dashboards/drop_session.json:/etc/grafana/provisioning/dashboards/drop_session.json
+      - ./docker/grafana/dashboards/demo.json:/etc/grafana/provisioning/dashboards/demo.json
+#      - ./docker/grafana/dashboards/create_session.json:/etc/grafana/provisioning/dashboards/create_session.json
+#      - ./docker/grafana/dashboards/drop_session.json:/etc/grafana/provisioning/dashboards/drop_session.json
 
   prometheus:
     image: prom/prometheus

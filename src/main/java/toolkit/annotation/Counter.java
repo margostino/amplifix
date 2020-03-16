@@ -8,6 +8,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Counter {
+
+    String id() default "counter";
+
     String metricName() default "";
 
     String[] fields() default "";

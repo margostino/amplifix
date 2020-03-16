@@ -1,13 +1,20 @@
 package toolkit.eventbus;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.vertx.core.json.JsonObject;
+import lombok.AllArgsConstructor;
+import toolkit.metadatareader.MetricAnnotation;
+
+import java.util.List;
+
+@AllArgsConstructor
 public class Event {
 
-    public Metadata metadata;
-    public String raw;
+    public EventMetadata metadata;
+    public JsonObject data;
 
-    public Event(Metadata metadata, String raw) {
-        this.metadata = metadata;
-        this.raw = raw;
+    @JsonIgnore
+    public List<MetricAnnotation> getAnnotations() {
+        return metadata.annotations;
     }
-
 }

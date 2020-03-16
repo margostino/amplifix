@@ -28,11 +28,9 @@ public class DemoService {
     }
 
     public SessionResponse createSession(SessionRequest request) {
-        //EventSerializer serializer = new EventSerializer();
-        //eventBus.post(serializer.serialize(new Event(request)));
         SessionResponse response = new SessionResponse(request.description, request.country, now());
         sessionDatabase.add(response.sessionId);
-        amplifix.post(response);
+        amplifix.send(response);
         return response;
     }
 
@@ -46,7 +44,7 @@ public class DemoService {
 
     public AuthorizeResponse authorize(String sessionId, AuthorizeRequest request) {
         AuthorizeResponse response = new AuthorizeResponse(request.selectedPaymentMethod, APPROVED);
-        amplifix.post(response, sessionId);
+        amplifix.send(response, sessionId);
         return response;
     }
 
