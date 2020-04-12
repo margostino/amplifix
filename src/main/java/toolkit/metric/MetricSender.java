@@ -18,6 +18,10 @@ public class MetricSender {
         this.gauge = new GaugeRegistry();
     }
 
+    public void send(String a) {
+
+    }
+
     public void send(Meter meter) {
         //gauge.update(metrics.get(0));
 

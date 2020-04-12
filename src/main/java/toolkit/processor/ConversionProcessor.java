@@ -21,8 +21,8 @@ public class ConversionProcessor extends EventProcessor {
 
     public DataGridNode dataGridNode;
 
-    public ConversionProcessor(String prefix, DataGridNode dataGridNode) {
-        super(prefix, ConversionRegister.class);
+    public ConversionProcessor(DataGridNode dataGridNode) {
+        super(ConversionRegister.class);
         this.dataGridNode = dataGridNode;
     }
 
@@ -35,7 +35,7 @@ public class ConversionProcessor extends EventProcessor {
         // TODO: evaluate decode in a class
         JsonObject control = metadata.getJsonObject("control");
         String key = metadata.getString("key");
-        String metricName = decorateMetricName(prefix, "conversion");
+        String metricName = decorateMetricName(DEFAULT_PREFIX, "conversion");
 
         Optional<String> fieldName = control.fieldNames()
                                             .stream()

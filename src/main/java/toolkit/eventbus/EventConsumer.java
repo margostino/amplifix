@@ -1,6 +1,7 @@
 package toolkit.eventbus;
 
 import io.micrometer.core.instrument.Meter;
+import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,7 @@ import java.util.List;
 import static toolkit.json.JsonCodec.decode;
 
 @Slf4j
-public class EventConsumer {
+public class EventConsumer implements Handler<Message<Object>> {
 
     private MetricBuilder metricBuilder;
     private MetricSender metricSender;

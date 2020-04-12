@@ -1,20 +1,20 @@
 package toolkit.scheduler;
 
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+//import org.quartz.Job;
+//import org.quartz.JobExecutionContext;
+//import org.quartz.JobExecutionException;
 
 
-public class SimpleJob implements Job {
-
+//public class SimpleJob implements Job {
+public class SimpleJob {
     //public DataGridClient dataGridClient;
 
     public SimpleJob() {
         //this.dataGridClient = new DataGridClient();
     }
 
-    public void execute(JobExecutionContext context) throws JobExecutionException {
-
+//    public void execute(JobExecutionContext context) throws JobExecutionException {
+//
 //        System.out.println("This is a quartz job!");
 //        JobDataMap dataMap = context.getJobDetail().getJobDataMap();
 //        String jobSays = dataMap.getString("jobSays");
@@ -29,6 +29,6 @@ public class SimpleJob implements Job {
 //        } catch (SchedulerException e) {
 //            // TODO
 //        }
-    }
+//    }
 
 }

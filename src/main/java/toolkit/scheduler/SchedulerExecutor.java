@@ -1,12 +1,12 @@
 package toolkit.scheduler;
 
-import org.quartz.Scheduler;
-import org.quartz.SchedulerFactory;
+//import org.quartz.Scheduler;
+//import org.quartz.SchedulerFactory;
 
 public class SchedulerExecutor {
 
-    public SchedulerFactory schedulerFactory;
-    public Scheduler scheduler;
+//    public SchedulerFactory schedulerFactory;
+//    public Scheduler scheduler;
 
     public SchedulerExecutor() {
 

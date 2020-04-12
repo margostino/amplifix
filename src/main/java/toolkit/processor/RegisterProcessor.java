@@ -25,8 +25,8 @@ public class RegisterProcessor extends EventProcessor {
 
     public DataGridNode dataGridNode;
 
-    public RegisterProcessor(String prefix, DataGridNode dataGridNode) {
-        super(prefix, Drop.class);
+    public RegisterProcessor(DataGridNode dataGridNode) {
+        super(Drop.class);
         this.dataGridNode = dataGridNode;
     }
 
@@ -42,7 +42,7 @@ public class RegisterProcessor extends EventProcessor {
             String control = drop.event;
             List<String> tagKeys = drop.tags;
             String metricName = drop.metricName;
-            String registerMetricName = decorateMetricName(prefix, "register");
+            String registerMetricName = decorateMetricName(DEFAULT_PREFIX, "register");
             long ttl = drop.ttl;
             TimeUnit timeUnit = drop.timeUnit;
 

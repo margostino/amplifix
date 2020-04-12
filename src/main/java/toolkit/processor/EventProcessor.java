@@ -18,11 +18,10 @@ import static java.util.stream.Collectors.toList;
 
 public abstract class EventProcessor {
 
-    protected final String prefix;
+    protected final String DEFAULT_PREFIX = "amplifix";
     protected final Class<? extends Annotation> annotationClass;
 
-    public EventProcessor(String prefix, Class<? extends Annotation> annotationClass) {
-        this.prefix = prefix;
+    public EventProcessor(Class<? extends Annotation> annotationClass) {
         this.annotationClass = annotationClass;
     }
 

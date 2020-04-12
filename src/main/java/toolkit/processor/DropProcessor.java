@@ -20,8 +20,8 @@ import static toolkit.json.JsonCodec.decode;
 @Slf4j
 public class DropProcessor extends EventProcessor {
 
-    public DropProcessor(String prefix) {
-        super(prefix, DropRegister.class);
+    public DropProcessor() {
+        super(DropRegister.class);
     }
 
     public List<Meter> getMeters(Event event) {
@@ -32,7 +32,7 @@ public class DropProcessor extends EventProcessor {
         if (metadata.isPresent()) {
             DropRegistry dropRegistry = decode(event.data.encode(), DropRegistry.class);
             List<Tag> tags = getTagsForMetric(dropRegistry.tags);
-            String metricName = decorateMetricName(prefix, dropRegistry.metricName);
+            String metricName = decorateMetricName(DEFAULT_PREFIX, dropRegistry.metricName);
             meters = asList(counter(metricName, tags));
         }
 

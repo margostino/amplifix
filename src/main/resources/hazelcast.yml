@@ -1,0 +1,16 @@
+hazelcast:
+  group:
+    name: 'amplifix'
+    management-center:
+      enabled: true
+      url: 'http://localhost:8080/hazelcast-mancenter'
+    network:
+      port:
+        port: 9701
+      join:
+        multicast:
+          enabled: false
+        tcp-ip:
+          enabled: true
+          member-list:
+            - 127.0.0.1:9701

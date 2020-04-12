@@ -2,10 +2,12 @@ package demo;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import toolkit.Amplifix;
 
 import java.util.ArrayList;
@@ -14,6 +16,9 @@ import java.util.List;
 @Slf4j
 @Configuration
 public class DemoConfiguration {
+
+    @Autowired
+    Environment environment;
 
     // Custom Tags
     @Bean("common_tags")
@@ -47,7 +52,7 @@ public class DemoConfiguration {
     // Custom Bean without Configuration
     @Bean
     public DemoService createApiService() {
-        Amplifix amplifix = new Amplifix();
+        Amplifix amplifix = Amplifix.runSync();
         return new DemoService(amplifix);
     }
 

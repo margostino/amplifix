@@ -11,13 +11,13 @@ public class AuthorizeResponse {
     public String authorizationToken;
     @ConversionControl(value = "approved")
     public Status status;
-    @JsonProperty("authorized_payment_method")
-    public String authorizedPaymentMethod;
+    @JsonProperty("selected_payment_method")
+    public final String selectedPaymentMethod;
 
-    public AuthorizeResponse(String authorizedPaymentMethod, Status status) {
+    public AuthorizeResponse(String selectedPaymentMethod, Status status) {
         this.authorizationToken = UUID.randomUUID().toString();
         this.status = status;
-        this.authorizedPaymentMethod = authorizedPaymentMethod;
+        this.selectedPaymentMethod = selectedPaymentMethod;
     }
 
 

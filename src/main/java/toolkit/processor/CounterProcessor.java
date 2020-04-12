@@ -24,8 +24,8 @@ import static toolkit.util.StringUtils.toSnakeCase;
 @Slf4j
 public class CounterProcessor extends EventProcessor {
 
-    public CounterProcessor(String prefix) {
-        super(prefix, Counter.class);
+    public CounterProcessor() {
+        super(Counter.class);
     }
 
     protected List<Meter> getMeters(Event event) {
@@ -39,7 +39,7 @@ public class CounterProcessor extends EventProcessor {
             CounterAnnotation counter = (CounterAnnotation) metadata.get();
             JsonObject data = event.data;
 
-            String metricName = decorateMetricName(prefix, counter.metricName);
+            String metricName = decorateMetricName(DEFAULT_PREFIX, counter.metricName);
 
             List<String> fields = counter.fields;
 

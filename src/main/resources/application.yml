@@ -3,15 +3,14 @@ spring:
     allow-bean-definition-overriding: true
   application:
     name: amplifix
-#  profiles:
-#    default: dev
+  profiles:
+    default: dev
 #logging:
 #  level:
 #    root: DEBUG
 
-
 server:
-  port: ${SERVICE_PORT}
+  port: 8082
   use-forward-headers: true
 
 management:
