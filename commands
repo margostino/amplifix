@@ -12,3 +12,10 @@ curl -XPOST http://localhost:3000/api/datasources -u admin:admin -H "Content-Typ
 
 IMPORT Dashboard:
 curl -XPOST http://localhost:3000/api/dashboards/db -u admin:admin -H "Content-Type: application/json" -H "Accept: application/json" -d @./dashboards/demo_create_session.json
+
+
+Verify Makefile separators:
+cat -e -t -v Makefile
+
+Flow generator:
+make generate-flow amount=1

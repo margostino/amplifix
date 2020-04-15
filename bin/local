@@ -1,0 +1,42 @@
+#!/bin/bash
+set -e
+
+source ./bin/common
+
+docker_compose_up() {
+    docker_compose_down
+    COMPOSE_HTTP_TIMEOUT=360 USERID=$(id -u):$(id -g) docker-compose -f docker-compose.yml --project-name ${DOCKER_PROJECT_NAME} up -d --build "$@"
+    docker_wait_until_healthy_or_none 0 180
+    docker ps -a
+    echo "---output of stopped containers---"
+    for container in $(docker ps --filter status=exited -q); do
+        echo "${container}"
+        docker logs "${container}"
+    done
+    docker_validate
+}
+
+docker_compose_down() {
+    docker-compose -f docker-compose.yml --project-name ${DOCKER_PROJECT_NAME} down -v || true
+    docker-compose -f docker-compose.yml --project-name ${DOCKER_PROJECT_NAME} rm --force || true
+    docker rm "$(docker ps -a -q)" -f || true
+}
+
+prepare_config_files() {
+    sed -e "s/\${IP}/${DOCKER_HOST}/g" ./docker/prometheus/prometheus_template.yml > ./docker/prometheus/prometheus.yml
+    sed -e "s/\${IP}/${DOCKER_HOST}/g" ./docker/grafana/datasources/datasources_template.yaml > ./docker/grafana/datasources/datasources.yaml
+    sed -e "s/\${IP}/${DOCKER_HOST}/g" ./docker/nginx/default_template.conf > ./docker/nginx/default.conf
+}
+
+remove_container_if_exists() {
+    local name=${1}
+    if [ "$(docker ps -q -f name=${name})" ]; then
+        #docker stop ${name}
+        docker rm -f /${name}
+    fi
+}
+
+COMMAND=$1
+shift
+
+${COMMAND} "$@"
