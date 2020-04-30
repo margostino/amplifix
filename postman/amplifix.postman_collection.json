@@ -1,12 +1,12 @@
 {
 	"info": {
-		"_postman_id": "5f6809c2-a57e-4e7c-b983-0ea83ab11f7c",
+		"_postman_id": "d39b625e-b05f-43a2-a504-8ec54cf1b5da",
 		"name": "amplifix",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "create session",
+			"name": "create session (8082)",
 			"event": [
 				{
 					"listen": "test",
@@ -31,7 +31,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"country\": \"GB\",\n\t\"description\": \"demo payment session\"\n}"
+					"raw": "{\n\t\"country\": \"BR\",\n\t\"description\": \"demo payment session\",\n\t\"selected_payment_method\": \"invoice\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8082/payments/sessions",
@@ -40,6 +40,92 @@
 						"localhost"
 					],
 					"port": "8082",
+					"path": [
+						"payments",
+						"sessions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create session (5001)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d447444a-51bb-4429-a64c-0852ff3b1758",
+						"exec": [
+							"session_id = pm.response.json().session_id;",
+							"pm.environment.set(\"session_id\", session_id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"country\": \"BR\",\n\t\"description\": \"demo payment session\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5001/payments/sessions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"payments",
+						"sessions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create session (5000)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1ae2d641-c1fb-4bae-8fdb-37c43d0993c0",
+						"exec": [
+							"session_id = pm.response.json().session_id;",
+							"pm.environment.set(\"session_id\", session_id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"country\": \"BR\",\n\t\"description\": \"demo payment session\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/payments/sessions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
 					"path": [
 						"payments",
 						"sessions"
@@ -120,15 +206,12 @@
 					"raw": "{\n\t\"country\": \"GB\",\n\t\"description\": \"demo payment session\"\n}"
 				},
 				"url": {
-					"raw": "http://10.96.50.220:31199/payments/sessions",
+					"raw": "http://localhost:8082/payments/sessions",
 					"protocol": "http",
 					"host": [
-						"10",
-						"96",
-						"50",
-						"220"
+						"localhost"
 					],
-					"port": "31199",
+					"port": "8082",
 					"path": [
 						"payments",
 						"sessions"
@@ -190,8 +273,8 @@
 					"script": {
 						"id": "d447444a-51bb-4429-a64c-0852ff3b1758",
 						"exec": [
-							"session_id = pm.response.json().session_id;",
-							"pm.environment.set(\"session_id\", session_id);"
+							"order_id = pm.response.json().order_id;",
+							"pm.environment.set(\"order_id\", order_id);"
 						],
 						"type": "text/javascript"
 					}
@@ -263,6 +346,76 @@
 			"response": []
 		},
 		{
+			"name": "payment methods (mock.session.id)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8082/payments/sessions/mock.session.id/payment_methods",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"payments",
+						"sessions",
+						"mock.session.id",
+						"payment_methods"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "payment methods (mock.session.id 5000)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/payments/sessions/mock.session.id/payment_methods",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"payments",
+						"sessions",
+						"mock.session.id",
+						"payment_methods"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "payment methods (not found)",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -281,7 +434,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8082/payments/sessions/fake/payment_methods",
+					"raw": "http://localhost:8082/payments/sessions/mock.session.not.found/payment_methods",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -290,7 +443,7 @@
 					"path": [
 						"payments",
 						"sessions",
-						"fake",
+						"mock.session.not.found",
 						"payment_methods"
 					]
 				}
