@@ -1,0 +1,37 @@
+buildscript {
+    ext {
+        versionVertx = '4.0.0-milestone4'
+        versionLombok = '1.18.10'
+        versionGuice = '4.2.3'
+        versionGuava = '29.0-jre'
+    }
+}
+
+plugins {
+    id 'java'
+}
+
+apply plugin: 'java'
+
+group = 'org.gaussian.amplifix.demo.vertx'
+version = "${buildVersion}" != "" ? "${buildVersion}" : "test"
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compile name:'amplifix-latest', ext:'jar'
+    compile group: 'io.vertx', name: 'vertx-core', version: versionVertx
+    compile group: 'io.vertx', name: 'vertx-web', version: versionVertx
+    compile group: 'org.projectlombok', name: 'lombok', version: versionLombok
+    compile group: 'com.google.inject', name: 'guice', version: versionGuice
+    compile group: 'com.google.inject.extensions', name: 'guice-multibindings', version: versionGuice
+    compile group: 'com.google.guava', name: 'guava', version: versionGuava
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versionLombok
+}

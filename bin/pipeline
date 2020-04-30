@@ -1,0 +1,177 @@
+#!/bin/bash
+
+#set -e
+#source ./bin/common
+
+RED="\033[91m"
+GREEN="\033[92m"
+YELLOW="\033[93m"
+GREY="\033[90m"
+PURPLE="\033[95m"
+ENDC="\033[0m"
+
+BUILD_VERSION='latest'
+SERVICE_PORT=8880
+METRICS_PORT=8881
+SERVICE_NAME='amplifix-demo'
+DOCKER_ID='margostino'
+
+
+log_debug() {
+    printf "${GREY}${1}${ENDC}\n"
+}
+
+log_info() {
+    printf "${GREEN}${1}${ENDC}\n"
+}
+
+log_warn() {
+    printf "${YELLOW}${1}${ENDC}\n"
+}
+
+log_error() {
+    printf "${RED}${1}${ENDC}\n"
+}
+
+docker_login() {
+    docker login -u duneding
+}
+
+build_docker_image() {
+   local service_port=${SERVICE_PORT}
+   local metrics_port=${METRICS_PORT}
+   local build_version=${BUILD_VERSION}
+
+   # Transform long options to short ones
+   for arg in "$@"; do
+      shift
+      case "$arg" in
+        "--service-port")
+            set -- "$@" "-s"
+            ;;
+        "--metrics-port")
+            set -- "$@" "-m"
+            ;;
+        *)
+            set -- "$@" "$arg"
+            ;;
+      esac
+   done
+
+   while getopts ":s:m:v" opt; do
+        case ${opt} in
+            s)
+                service_port=${OPTARG}
+                ;;
+            m)
+                metrics_port=${OPTARG}
+                ;;
+            v)
+                build_version=${OPTARG}
+                ;;
+            \?)
+                echo "Invalid option: -${OPTARG}!"
+                ;;
+            :)
+                echo "Option -${OPTARG} requires an argument!"
+                ;;
+        esac
+   done
+
+   log_info "Service Port: ${service_port}"
+   log_info "Metrics Port: ${metrics_port}"
+   log_info "Build Version: ${build_version}"
+
+   #docker_login
+#   log_info "Building service with version ${BUILD_VERSION}"
+#   ./gradlew -no-build-cache -PbuildVersion=${BUILD_VERSION} clean
+#   ./gradlew build -PbuildVersion=${BUILD_VERSION}
+
+  local image_name="${SERVICE_NAME}:${BUILD_VERSION}"
+  log_debug "Building docker image ${image_name}"
+
+   docker build \
+   -t ${image_name} \
+   --build-arg SERVICE_PORT=${service_port} \
+   --build-arg METRICS_PORT=${metrics_port} \
+   --no-cache .
+}
+
+docker_wait_until_healthy_or_none(){
+  local wait=${1}
+  local total_wait=${2}
+
+  if [[ "$wait" -ge "$total_wait" ]]; then
+      echo "docker_wait ran out of time, exit 1"
+      exit 1
+  fi
+  for starting in $(docker ps --filter health=starting -q); do
+    sleep 10
+    docker_wait_until_healthy_or_none $((wait+10)) $total_wait
+  done
+
+  for unhealthy in $(docker ps --filter health=unhealthy -q); do
+    sleep 10
+    docker_wait_until_healthy_or_none $((wait+10)) $total_wait
+  done
+  echo "docker_wait success"
+  exit 0
+}
+
+docker_validate(){
+  #containers exited
+  exitedContainers=$(docker ps --filter status=exited -q)
+  #containers exited with 0 exitcode (valid exit)
+  validExitedContainers=$(docker ps --all --filter exited=0 -q)
+  #if there is a diff between above it means one or more containers exited unhealthy
+  if [[ "$exitedContainers" != "$validExitedContainers" ]]; then
+      echo "docker_validate fail"
+      exit 1
+  fi
+  echo "docker_validate success"
+  exit 0
+}
+
+docker_compose_up() {
+    COMPOSE_HTTP_TIMEOUT=360 USERID=$(id -u):$(id -g) docker-compose -f docker-compose.yml --project-name ${DOCKER_PROJECT_NAME} up -d --build "$@"
+    docker_wait_until_healthy_or_none 0 180
+    docker ps -a
+    echo "---output of stopped containers---"
+    for container in $(docker ps --filter status=exited -q); do
+        echo "${container}"
+        docker logs "${container}"
+    done
+    docker_validate
+}
+
+stop_and_clean_docker_world() {
+    docker-compose -f docker-compose.yml --project-name ${DOCKER_PROJECT_NAME} down -v || true
+    docker-compose -f docker-compose.yml --project-name ${DOCKER_PROJECT_NAME} rm --force || true
+    docker rm "$(docker ps -a -q)" -f || true
+    remove_image
+}
+
+prepare_config_files() {
+    sed -e "s/\${IP}/${DOCKER_HOST}/g" ./docker/prometheus/prometheus_template.yml > ./docker/prometheus/prometheus.yml
+    sed -e "s/\${IP}/${DOCKER_HOST}/g" ./docker/grafana/datasources/datasources_template.yaml > ./docker/grafana/datasources/datasources.yaml
+    sed -e "s/\${IP}/${DOCKER_HOST}/g" ./docker/nginx/default_template.conf > ./docker/nginx/default.conf
+}
+
+remove_container_if_exists() {
+    local name=${1}
+    if [ "$(docker ps -q -f name=${name})" ]; then
+        #docker stop ${name}
+        docker rm -f /${name}
+    fi
+}
+
+remove_image() {
+  if [[ "$(docker images -q amplifix:latest 2> /dev/null)" == "" ]]; then
+    docker rmi $(docker images | grep amplifix | tr -s ' ' | cut -d ' ' -f 3)
+  fi
+}
+
+
+COMMAND=$1
+shift
+${COMMAND} $@

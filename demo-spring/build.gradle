@@ -1,0 +1,47 @@
+buildscript {
+    ext {
+        versionSpringBoot = '2.2.6.RELEASE'
+        versionLombok = '1.18.10'
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.2.6.RELEASE'
+    id 'java'
+}
+
+apply plugin: 'java'
+apply plugin: "org.springframework.boot"
+apply plugin: 'io.spring.dependency-management'
+
+group = 'org.gaussian.amplifix.demo'
+version = "${buildVersion}" != "" ? "${buildVersion}" : "test"
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compile name:'amplifix-latest', ext:'jar'
+    //compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.3.2'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versionSpringBoot
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versionSpringBoot
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-jetty', version: versionSpringBoot
+    compile group: 'org.projectlombok', name: 'lombok', version: versionLombok
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versionLombok
+}
+
+task copyJarToRoot {
+    copy {
+        from 'build/libs/demo-spring-' + version + '.jar'
+        into "../libs"
+        rename { String fileName ->
+            fileName.replace('demo-spring-' + version + '.jar', 'amplifix-demo.jar')
+        }
+    }
+}

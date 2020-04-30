@@ -1,0 +1,92 @@
+buildscript {
+    ext {
+        versionJackson = '2.11.0'
+        versionMicrometer = '1.3.0'
+        versionHazelcast = '3.12.6'
+        versionLombok = '1.18.10'
+        versionVertx = '4.0.0-milestone4'
+        versionMockito = '3.3.3'
+        versionJolokia = '1.6.2'
+        versionApacheCommons = '3.3.2'
+        versionAssertj = '3.8.0'
+        versionJunit =  '4.12'
+        versionVertxTest = '1.1'
+    }
+}
+
+plugins {
+    id 'java-library'
+    id 'com.github.ben-manes.versions' version '0.15.0'
+}
+
+apply plugin: 'java'
+apply plugin: 'java-library'
+apply plugin: 'maven-publish'
+
+group = 'org.gaussian.amplifix.toolkit'
+version = "${buildVersion}" != "" ? "${buildVersion}" : "test"
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    //compile group: 'org.apache.commons', name: 'commons-lang3', version: versionApacheCommons
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versionJackson
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versionJackson
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versionJackson
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versionJackson
+    compile group: 'io.micrometer', name: 'micrometer-core', version: versionMicrometer
+    compile group: 'io.micrometer', name: 'micrometer-registry-prometheus', version: versionMicrometer
+    compile group: 'io.micrometer', name: 'micrometer-registry-jmx', version: versionMicrometer
+    compile group: 'com.hazelcast', name: 'hazelcast', version: versionHazelcast
+    compile group: 'org.projectlombok', name: 'lombok', version: versionLombok
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versionLombok
+    compile group: 'io.vertx', name: 'vertx-core', version: versionVertx
+    compile group: 'io.vertx', name: 'vertx-web', version: versionVertx
+    compile group: 'io.vertx', name: 'vertx-hazelcast', version: versionVertx
+    compile group: 'io.vertx', name: 'vertx-sync', version: versionVertx
+    compile group: 'io.vertx', name: 'vertx-micrometer-metrics', version: versionVertx
+    compile group: 'org.jolokia', name: 'jolokia-core', version: versionJolokia
+    //compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.2'
+
+    testCompile group: 'org.assertj', name: 'assertj-core', version: versionAssertj
+    testCompile group: 'junit', name: 'junit', version: versionJunit
+    testCompile group: 'io.vertx', name: 'vertx-unit', version: versionVertx
+    testCompile group: 'org.mockito', name: 'mockito-core', version: versionMockito
+    testCompile group: 'org.vertx-test', name: 'vertx-test', version: versionVertxTest
+
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": "org.gaussian.amplifix.toolkit.Amplifix"
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+task copyJarToDemo {
+    copy {
+        from 'build/libs/amplifix-latest.jar'
+        into "../demo-spring/libs"
+    }
+    copy {
+        from 'build/libs/amplifix-latest.jar'
+        into "../demo-vertx/libs"
+    }
+}
+
+task welcome {
+    doLast {
+        println 'Welcome on The Amplifix World!'
+    }
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'sources'
+}
