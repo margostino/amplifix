@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.gaussian.amplifix.toolkit.annotation.Drop;
+import org.gaussian.amplifix.toolkit.annotation.MetricAnnotation;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
@@ -48,10 +49,10 @@ public class DropAnnotation implements MetricAnnotation {
         Drop metadata = (Drop) annotation;
         return new DropAnnotation(metadata.id(),
                                   metadata.metricName(),
-                                  metadata.field(),
-                                  metadata.event(),
-                                  metadata.ttl(),
-                                  metadata.timeUnit(),
+                                  metadata.config().field(),
+                                  metadata.config().event(),
+                                  metadata.config().ttl(),
+                                  metadata.config().timeUnit(),
                                   asList(metadata.tags()));
     }
 

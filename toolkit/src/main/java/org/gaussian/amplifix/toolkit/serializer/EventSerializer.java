@@ -1,8 +1,9 @@
-package org.gaussian.amplifix.toolkit.eventbus;
+package org.gaussian.amplifix.toolkit.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import org.gaussian.amplifix.toolkit.model.Event;
 
 import java.io.IOException;
 

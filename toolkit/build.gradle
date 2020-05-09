@@ -70,6 +70,8 @@ jar {
 }
 
 task copyJarToDemo {
+    delete "../demo-spring/libs/amplifix-latest.jar"
+    delete "../demo-vertx/libs/amplifix-latest.jar"
     copy {
         from 'build/libs/amplifix-latest.jar'
         into "../demo-spring/libs"

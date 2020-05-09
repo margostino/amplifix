@@ -19,11 +19,11 @@ version = "${buildVersion}" != "" ? "${buildVersion}" : "test"
 sourceCompatibility = 1.8
 
 repositories {
-    jcenter()
-    mavenCentral()
     flatDir {
         dirs 'libs'
     }
+    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -45,3 +45,7 @@ task copyJarToRoot {
         }
     }
 }
+
+//clean.doFirst {
+//    delete "${rootDir}/libs/amplifix-latest.jar"
+//}

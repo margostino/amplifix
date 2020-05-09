@@ -3,10 +3,10 @@ package demo.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class SessionNotFoundException extends RuntimeException {
+@ResponseStatus(HttpStatus.GATEWAY_TIMEOUT)
+public class GatewayTimeoutException extends RuntimeException {
 
-    public SessionNotFoundException(String message) {
+    public GatewayTimeoutException(String message) {
         super(message);
     }
 

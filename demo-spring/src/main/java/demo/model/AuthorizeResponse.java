@@ -2,9 +2,11 @@ package demo.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.gaussian.amplifix.toolkit.annotation.ConversionControl;
+import org.gaussian.amplifix.toolkit.annotation.Counter;
 
 import java.util.UUID;
 
+@Counter(metricName = "authorize", fields = {"selected_payment_method", "status"})
 public class AuthorizeResponse {
 
     @JsonProperty("authorization_token")

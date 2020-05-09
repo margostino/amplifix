@@ -3,6 +3,7 @@ package org.gaussian.amplifix.toolkit.metric;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Metrics;
+import org.gaussian.amplifix.toolkit.model.Metric;
 
 import static io.micrometer.core.instrument.Meter.Type.COUNTER;
 

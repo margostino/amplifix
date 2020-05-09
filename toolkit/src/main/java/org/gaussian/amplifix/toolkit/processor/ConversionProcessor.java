@@ -6,7 +6,7 @@ import io.vertx.core.json.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.gaussian.amplifix.toolkit.annotation.ConversionRegister;
 import org.gaussian.amplifix.toolkit.datagrid.DataGridNode;
-import org.gaussian.amplifix.toolkit.eventbus.Event;
+import org.gaussian.amplifix.toolkit.model.Event;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class ConversionProcessor extends EventProcessor {
 
         List<Meter> meters = new ArrayList<>();
         List<Tag> tags = new ArrayList<>();
-        JsonObject metadata = event.metadata.control;
+        JsonObject metadata = null;//event.metadata.control;
         JsonObject data = event.data;
         // TODO: evaluate decode in a class
         JsonObject control = metadata.getJsonObject("control");

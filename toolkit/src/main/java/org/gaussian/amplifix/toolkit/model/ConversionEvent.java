@@ -1,4 +1,4 @@
-package org.gaussian.amplifix.toolkit.eventbus;
+package org.gaussian.amplifix.toolkit.model;
 
 import io.vertx.core.json.JsonObject;
 import lombok.AllArgsConstructor;
@@ -23,14 +23,17 @@ import static java.util.stream.Collectors.toMap;
 public class ConversionEvent {
 
     public String key;
-    public Map<String, String> control;
+    public JsonObject control;
     public JsonObject event;
 
     public static ConversionEvent of(String key, JsonObject event, Field[] fields) {
-        Map<String, String> control = asList(fields).stream()
-                                                    .filter(ConversionEvent::isControl)
-                                                    .map(ConversionEvent::getControl)
-                                                    .collect(toMap(kv -> kv.get("key"), kv -> kv.get("value")));
+        Map<String, String> controlMap = asList(fields).stream()
+                                                       .filter(ConversionEvent::isControl)
+                                                       .map(ConversionEvent::getControl)
+                                                       .collect(toMap(kv -> kv.get("key"), kv -> kv.get("value")));
+
+        JsonObject control = new JsonObject().put("key", key)
+                                             .put("control", controlMap);
 
         return new ConversionEvent(key, control, event);
     }

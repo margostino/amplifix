@@ -3,7 +3,7 @@ package org.gaussian.amplifix.toolkit.metric;
 import io.micrometer.core.instrument.Meter;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.gaussian.amplifix.toolkit.eventbus.Event;
+import org.gaussian.amplifix.toolkit.model.Event;
 import org.gaussian.amplifix.toolkit.processor.EventProcessor;
 
 import java.util.List;

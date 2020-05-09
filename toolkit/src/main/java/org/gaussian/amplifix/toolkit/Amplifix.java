@@ -14,7 +14,9 @@ import io.vertx.micrometer.backends.BackendRegistries;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.gaussian.amplifix.toolkit.eventbus.AmplifixEventBus;
-import org.gaussian.amplifix.toolkit.eventbus.ConversionEvent;
+import org.gaussian.amplifix.toolkit.eventbus.AmplifixSender;
+import org.gaussian.amplifix.toolkit.model.ConversionEvent;
+import org.gaussian.amplifix.toolkit.model.TracedEvent;
 import org.gaussian.amplifix.toolkit.runner.AmplifixRunner;
 import org.gaussian.amplifix.toolkit.runner.SystemStatus;
 
@@ -23,12 +25,14 @@ import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
 
 import static io.vertx.core.json.JsonObject.mapFrom;
+import static java.time.Instant.now;
+
 
 @AllArgsConstructor
 @Slf4j
-public class Amplifix<T> {
+public class Amplifix<E> {
 
-    private AmplifixEventBus eventBus;
+    private AmplifixSender sender;
 
     public static Amplifix runSync() {
 
@@ -74,12 +78,16 @@ public class Amplifix<T> {
         return AmplifixRunner.runAsync();
     }
 
-    public void send(T event) {
-        eventBus.send(event);
+    public void send(E event) {
+        sender.send(event);
     }
 
-    public void send(T event, String conversionKey) {
-        eventBus.send(ConversionEvent.of(conversionKey, mapFrom(event), event.getClass().getFields()));
+    public void trace(E event) {
+        sender.trace(event);
+    }
+
+    public void send(E event, String conversionKey) {
+        sender.send(event, conversionKey);
     }
 
 }

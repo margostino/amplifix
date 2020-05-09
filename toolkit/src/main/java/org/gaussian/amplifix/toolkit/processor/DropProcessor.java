@@ -5,8 +5,8 @@ import io.micrometer.core.instrument.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.gaussian.amplifix.toolkit.annotation.DropRegister;
 import org.gaussian.amplifix.toolkit.datagrid.DropRegistry;
-import org.gaussian.amplifix.toolkit.eventbus.Event;
-import org.gaussian.amplifix.toolkit.metadatareader.MetricAnnotation;
+import org.gaussian.amplifix.toolkit.model.Event;
+import org.gaussian.amplifix.toolkit.annotation.MetricAnnotation;
 
 import java.util.ArrayList;
 import java.util.List;

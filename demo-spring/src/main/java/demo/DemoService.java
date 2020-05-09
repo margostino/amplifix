@@ -1,6 +1,5 @@
 package demo;
 
-import demo.exception.SessionNotFoundException;
 import demo.model.AuthorizeRequest;
 import demo.model.AuthorizeResponse;
 import demo.model.OrderRequest;
@@ -14,21 +13,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static demo.model.Status.APPROVED;
-import static java.text.MessageFormat.format;
 import static java.time.Instant.now;
-import static java.util.Arrays.asList;
+
 
 public class DemoService {
 
-    private Amplifix amplifix;
-    private List<String> sessionDatabase;
+    private final Amplifix amplifix;
+    private final List<String> sessionDatabase;
+    private final TriggerStatusService triggerStatusService;
 
-    public DemoService(Amplifix amplifix) {
+    public DemoService(Amplifix amplifix, TriggerStatusService triggerStatusService) {
         this.amplifix = amplifix;
         this.sessionDatabase = new ArrayList<>();
+        this.triggerStatusService = triggerStatusService;
     }
 
     public SessionResponse createSession(SessionRequest request) {
+        triggerStatusService.randomHttpStatus();
         SessionResponse response = new SessionResponse(request.description, request.country, now());
         sessionDatabase.add(response.sessionId);
         amplifix.send(response);
@@ -36,21 +37,25 @@ public class DemoService {
     }
 
     public PaymentMethodsResponse getPaymentMethods(String sessionId) {
-
-        if ("mock.session.not.found".equalsIgnoreCase(sessionId)) {
-            throw new SessionNotFoundException(format("Session {0} not found", sessionId));
-        }
-        return new PaymentMethodsResponse(sessionId);
+        triggerStatusService.mockedTrigger(sessionId);
+        triggerStatusService.randomHttpStatus();
+        PaymentMethodsResponse response = new PaymentMethodsResponse(sessionId);
+        amplifix.send(response);
+        return response;
     }
 
     public AuthorizeResponse authorize(String sessionId, AuthorizeRequest request) {
+        triggerStatusService.randomHttpStatus();
         AuthorizeResponse response = new AuthorizeResponse(request.selectedPaymentMethod, APPROVED);
         amplifix.send(response, sessionId);
         return response;
     }
 
     public OrderResponse createOrder(OrderRequest request) {
-        return new OrderResponse(request.authorizedPaymentMethod, APPROVED);
+        triggerStatusService.randomHttpStatus();
+        OrderResponse response = new OrderResponse(request.authorizedPaymentMethod, APPROVED);
+        amplifix.send(response);
+        return response;
     }
 
 }

@@ -2,10 +2,10 @@ package org.gaussian.amplifix.toolkit.processor;
 
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Tag;
-import org.gaussian.amplifix.toolkit.eventbus.Event;
-import org.gaussian.amplifix.toolkit.eventbus.EventMetadata;
-import org.gaussian.amplifix.toolkit.metadatareader.MetricAnnotation;
-import org.gaussian.amplifix.toolkit.metric.TagSerializable;
+import org.gaussian.amplifix.toolkit.model.Event;
+import org.gaussian.amplifix.toolkit.model.EventMetadata;
+import org.gaussian.amplifix.toolkit.annotation.MetricAnnotation;
+import org.gaussian.amplifix.toolkit.model.TagSerializable;
 
 import java.lang.annotation.Annotation;
 import java.util.List;

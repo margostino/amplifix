@@ -3,17 +3,16 @@ package org.gaussian.amplifix.toolkit.datagrid;
 import com.hazelcast.core.EntryEvent;
 import com.hazelcast.core.EntryListener;
 import com.hazelcast.core.MapEvent;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.gaussian.amplifix.toolkit.eventbus.AmplifixEventBus;
+import org.gaussian.amplifix.toolkit.eventbus.AmplifixSender;
 
+@AllArgsConstructor
 @Slf4j
 public class DropRegistryListener<K, V> implements EntryListener<K, V> {
 
-    private AmplifixEventBus eventBus;
-
-    public DropRegistryListener(AmplifixEventBus eventBus) {
-        this.eventBus = eventBus;
-    }
+    private AmplifixSender sender;
 
     @Override
     public void entryEvicted(EntryEvent<K, V> event) {
@@ -53,7 +52,7 @@ public class DropRegistryListener<K, V> implements EntryListener<K, V> {
      */
     public void onEvictedEntryEvent(EntryEvent<K, V> event) {
         DropRegistry dropRegistry = (DropRegistry) event.getOldValue();
-        eventBus.send(dropRegistry);
+        sender.send(dropRegistry);
         LOG.info("Drop Object from DataGrid");
     }
 }

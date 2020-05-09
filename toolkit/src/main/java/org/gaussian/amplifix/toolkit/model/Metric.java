@@ -1,4 +1,4 @@
-package org.gaussian.amplifix.toolkit.metric;
+package org.gaussian.amplifix.toolkit.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

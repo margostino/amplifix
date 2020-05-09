@@ -1,9 +1,11 @@
 package demo.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.gaussian.amplifix.toolkit.annotation.Counter;
 
 import java.util.UUID;
 
+@Counter(metricName = "create_order", fields = {"payment_method", "status"})
 public class OrderResponse {
 
     @JsonProperty("order_id")

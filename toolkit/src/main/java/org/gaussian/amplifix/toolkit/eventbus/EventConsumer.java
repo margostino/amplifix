@@ -7,6 +7,8 @@ import io.vertx.core.json.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.gaussian.amplifix.toolkit.metric.MetricBuilder;
 import org.gaussian.amplifix.toolkit.metric.MetricSender;
+import org.gaussian.amplifix.toolkit.model.Event;
+
 import java.util.List;
 
 import static org.gaussian.amplifix.toolkit.json.JsonCodec.decode;

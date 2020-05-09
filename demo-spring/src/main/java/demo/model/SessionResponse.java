@@ -10,10 +10,11 @@ import java.util.UUID;
 
 import static demo.model.PaymentMethodCategory.PAY_LATER;
 import static demo.model.PaymentMethodCategory.PAY_NOW;
+import static demo.model.PaymentMethodCategory.PAY_OVER_TIME;
 import static demo.model.Status.APPROVED;
 import static java.util.Arrays.asList;
 import static java.util.concurrent.TimeUnit.SECONDS;
-
+import static org.gaussian.amplifix.toolkit.util.MathUtils.getProbabilityAsInt;
 
 @Drop(metricName = "session_drop",
       field = "session_id",
@@ -40,15 +41,18 @@ public class SessionResponse {
         this.country = country;
         this.status = APPROVED;
 
-        this.paymentMethodCategories = asList(PAY_NOW, PAY_LATER);
-//        int probability = getProbability();
-//        if (probability <= 10) {
-//            this.paymentMethodCategories = asList(PAY_NOW, PAY_LATER);
-//        } else if (probability <= 65) {
-//            this.paymentMethodCategories = asList(PAY_NOW);
-//        } else {
-//            this.paymentMethodCategories = asList(PAY_LATER);
-//        }
+        int probability = getProbabilityAsInt();
+        if (probability <= 5) {
+            this.paymentMethodCategories = asList(PAY_NOW);
+        } else if (probability <= 10) {
+            this.paymentMethodCategories = asList(PAY_OVER_TIME);
+        } else if (probability <= 15) {
+            this.paymentMethodCategories = asList(PAY_LATER);
+        } else if (probability <= 50) {
+            this.paymentMethodCategories = asList(PAY_NOW, PAY_LATER);
+        } else {
+            this.paymentMethodCategories = asList(PAY_NOW, PAY_LATER, PAY_OVER_TIME);
+        }
 
     }
 

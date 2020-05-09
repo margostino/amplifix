@@ -6,10 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.gaussian.amplifix.toolkit.annotation.Drop;
 import org.gaussian.amplifix.toolkit.datagrid.DataGridNode;
 import org.gaussian.amplifix.toolkit.datagrid.DropRegistry;
-import org.gaussian.amplifix.toolkit.eventbus.Event;
+import org.gaussian.amplifix.toolkit.model.Event;
 import org.gaussian.amplifix.toolkit.metadatareader.DropAnnotation;
-import org.gaussian.amplifix.toolkit.metadatareader.MetricAnnotation;
-import org.gaussian.amplifix.toolkit.metric.TagSerializable;
+import org.gaussian.amplifix.toolkit.annotation.MetricAnnotation;
+import org.gaussian.amplifix.toolkit.model.TagSerializable;
 
 import java.util.ArrayList;
 import java.util.List;

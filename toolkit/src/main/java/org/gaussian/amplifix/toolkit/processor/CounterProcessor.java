@@ -6,9 +6,9 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.gaussian.amplifix.toolkit.annotation.Counter;
-import org.gaussian.amplifix.toolkit.eventbus.Event;
+import org.gaussian.amplifix.toolkit.model.Event;
 import org.gaussian.amplifix.toolkit.metadatareader.CounterAnnotation;
-import org.gaussian.amplifix.toolkit.metadatareader.MetricAnnotation;
+import org.gaussian.amplifix.toolkit.annotation.MetricAnnotation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +63,10 @@ public class CounterProcessor extends EventProcessor {
             meters = multiTags.stream()
                               .map(tag -> getMultiTags(metricName, simpleTags, tag))
                               .collect(toList());
+
+            if (meters.isEmpty() && !simpleTags.isEmpty()) {
+                meters = asList(counter(metricName, simpleTags));
+            }
 
         }
 

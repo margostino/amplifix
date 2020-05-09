@@ -1,7 +1,7 @@
 package org.gaussian.amplifix.toolkit.filter;
 
 import lombok.AllArgsConstructor;
-import org.gaussian.amplifix.toolkit.metadatareader.MetricAnnotation;
+import org.gaussian.amplifix.toolkit.annotation.MetricAnnotation;
 
 import java.lang.annotation.Annotation;
 

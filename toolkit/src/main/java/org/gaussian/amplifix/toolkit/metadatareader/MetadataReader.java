@@ -4,6 +4,7 @@ import org.gaussian.amplifix.toolkit.annotation.ConversionRegister;
 import org.gaussian.amplifix.toolkit.annotation.Counter;
 import org.gaussian.amplifix.toolkit.annotation.Drop;
 import org.gaussian.amplifix.toolkit.annotation.DropRegister;
+import org.gaussian.amplifix.toolkit.annotation.MetricAnnotation;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;

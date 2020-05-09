@@ -1,15 +1,15 @@
-package toolkit;
+package toolkit.eventbus;
 
 import io.micrometer.core.instrument.Meter;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 import org.gaussian.amplifix.toolkit.datagrid.DropRegistry;
-import org.gaussian.amplifix.toolkit.eventbus.Event;
+import org.gaussian.amplifix.toolkit.model.Event;
 import org.gaussian.amplifix.toolkit.eventbus.EventConsumer;
-import org.gaussian.amplifix.toolkit.eventbus.EventMetadata;
+import org.gaussian.amplifix.toolkit.model.EventMetadata;
 import org.gaussian.amplifix.toolkit.metric.MetricBuilder;
 import org.gaussian.amplifix.toolkit.metric.MetricSender;
-import org.gaussian.amplifix.toolkit.metric.TagSerializable;
+import org.gaussian.amplifix.toolkit.model.TagSerializable;
 import org.junit.Test;
 import org.mockito.Mock;
 
@@ -28,6 +28,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static java.time.Instant.now;
+
 
 public class EventConsumerTest {
 
@@ -41,7 +43,7 @@ public class EventConsumerTest {
     @Test
     public void startup() {
         JsonObject data = new JsonObject().put("startup", "test");
-        Event event = new Event(new EventMetadata(new ArrayList(), new JsonObject()), data);
+        Event event = new Event(new EventMetadata(now(), new ArrayList()), data);
         when(message.body()).thenReturn(mapFrom(event));
 
         EventConsumer consumer = new EventConsumer(sender, builder);
@@ -65,7 +67,7 @@ public class EventConsumerTest {
 
         JsonObject data = new JsonObject().put("one.event", "test");
         Meter meter = counter("metric.mock", new ArrayList<>());
-        Event event = new Event(new EventMetadata(new ArrayList(), new JsonObject()), data);
+        Event event = new Event(new EventMetadata(now(), new ArrayList()), data);
 
         doNothing().when(sender).send(any(Meter.class));
         when(builder.build(any(Event.class))).thenReturn(asList(meter));

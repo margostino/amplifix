@@ -145,8 +145,10 @@ docker_compose_up() {
 }
 
 stop_and_clean_docker_world() {
+    clear
     docker-compose -f docker-compose.yml --project-name ${DOCKER_PROJECT_NAME} down -v || true
     docker-compose -f docker-compose.yml --project-name ${DOCKER_PROJECT_NAME} rm --force || true
+    docker stop "$(docker ps -a -q)" -f || true
     docker rm "$(docker ps -a -q)" -f || true
     remove_image
 }
@@ -167,7 +169,7 @@ remove_container_if_exists() {
 
 remove_image() {
   if [[ "$(docker images -q amplifix:latest 2> /dev/null)" == "" ]]; then
-    docker rmi $(docker images | grep amplifix | tr -s ' ' | cut -d ' ' -f 3)
+    docker rmi $(docker images | grep amplifix | tr -s ' ' | cut -d ' ' -f 3) || true
   fi
 }
 

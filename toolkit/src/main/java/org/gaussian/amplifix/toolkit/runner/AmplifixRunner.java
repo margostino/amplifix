@@ -21,7 +21,9 @@ import org.gaussian.amplifix.toolkit.datagrid.DataGridNode;
 import org.gaussian.amplifix.toolkit.datagrid.DropRegistry;
 import org.gaussian.amplifix.toolkit.datagrid.DropRegistryListener;
 import org.gaussian.amplifix.toolkit.eventbus.AmplifixEventBus;
+import org.gaussian.amplifix.toolkit.eventbus.AmplifixSender;
 import org.gaussian.amplifix.toolkit.eventbus.EventConsumer;
+import org.gaussian.amplifix.toolkit.eventbus.EventEncoder;
 import org.gaussian.amplifix.toolkit.metadatareader.MetadataReader;
 import org.gaussian.amplifix.toolkit.metric.MetricBuilder;
 import org.gaussian.amplifix.toolkit.metric.MetricSender;
@@ -107,13 +109,27 @@ public class AmplifixRunner {
         return new HazelcastClusterManager(hazelcastConfig);
     }
 
+    private static AmplifixSender deployVertxVerticle(Vertx vertx) {
+        JsonObject handshake = new JsonObject().put("startup", "Amplifix handshake successfully");
+        AmplifixEventBus amplifixEventBus = createEventBus(vertx);
+        vertx.deployVerticle(new AmplifixVerticle());
+        amplifixEventBus.send(handshake);
+        AmplifixSender amplifixSender = new AmplifixSender(amplifixEventBus);
+        EventConsumer eventConsumer = createEventConsumer(amplifixSender);
+        amplifixEventBus.setConsumer(eventConsumer);
+        return amplifixSender;
+    }
+
     private static AmplifixEventBus createEventBus(Vertx vertx) {
-        DataGridNode dataGridNode = createDataGrid();
-        List<EventProcessor> processors = getEventProcessor(dataGridNode);
-        EventConsumer eventConsumer = new EventConsumer(new MetricSender(), new MetricBuilder(processors));
-        AmplifixEventBus amplifixEventBus = new AmplifixEventBus(vertx.eventBus(), new MetadataReader(), eventConsumer);
-        dataGridNode.addEntryListener(createEntryListener(amplifixEventBus));
+        AmplifixEventBus amplifixEventBus = new AmplifixEventBus(vertx.eventBus());
         return amplifixEventBus;
+    }
+
+    private static EventConsumer createEventConsumer(AmplifixSender sender) {
+        DataGridNode dataGridNode = createDataGrid();
+        dataGridNode.addEntryListener(createEntryListener(sender));
+        List<EventProcessor> processors = getEventProcessor(dataGridNode);
+        return new EventConsumer(new MetricSender(), new MetricBuilder(processors));
     }
 
     private static DataGridNode createDataGrid() {
@@ -123,16 +139,8 @@ public class AmplifixRunner {
         return new DataGridNode(replicatedMap);
     }
 
-    private static EntryListener createEntryListener(AmplifixEventBus eventBus) {
-        return new DropRegistryListener<String, DropRegistry>(eventBus);
-    }
-
-    private static AmplifixEventBus deployVertxVerticle(Vertx vertx) {
-        JsonObject handshake = new JsonObject().put("startup", "Amplifix handshake successfully");
-        AmplifixEventBus eventBus = createEventBus(vertx);
-        vertx.deployVerticle(new AmplifixVerticle());
-        eventBus.send(handshake);
-        return eventBus;
+    private static EntryListener createEntryListener(AmplifixSender sender) {
+        return new DropRegistryListener<String, DropRegistry>(sender);
     }
 
     private static List<EventProcessor> getEventProcessor(DataGridNode dataGridNode) {

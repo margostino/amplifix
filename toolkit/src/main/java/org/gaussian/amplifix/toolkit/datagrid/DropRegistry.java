@@ -3,7 +3,7 @@ package org.gaussian.amplifix.toolkit.datagrid;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.gaussian.amplifix.toolkit.annotation.DropRegister;
-import org.gaussian.amplifix.toolkit.metric.TagSerializable;
+import org.gaussian.amplifix.toolkit.model.TagSerializable;
 
 import java.io.Serializable;
 import java.time.Instant;
