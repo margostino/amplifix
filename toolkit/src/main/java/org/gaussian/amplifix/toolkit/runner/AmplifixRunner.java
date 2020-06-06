@@ -23,15 +23,15 @@ import org.gaussian.amplifix.toolkit.datagrid.DropRegistryListener;
 import org.gaussian.amplifix.toolkit.eventbus.AmplifixEventBus;
 import org.gaussian.amplifix.toolkit.eventbus.AmplifixSender;
 import org.gaussian.amplifix.toolkit.eventbus.EventConsumer;
-import org.gaussian.amplifix.toolkit.eventbus.EventEncoder;
-import org.gaussian.amplifix.toolkit.metadatareader.MetadataReader;
-import org.gaussian.amplifix.toolkit.metric.MetricBuilder;
-import org.gaussian.amplifix.toolkit.metric.MetricSender;
+import org.gaussian.amplifix.toolkit.metric.AsyncWorker;
+import org.gaussian.amplifix.toolkit.metric.MetricWorker;
+import org.gaussian.amplifix.toolkit.metric.TraceWorker;
 import org.gaussian.amplifix.toolkit.processor.ConversionProcessor;
 import org.gaussian.amplifix.toolkit.processor.CounterProcessor;
 import org.gaussian.amplifix.toolkit.processor.DropProcessor;
 import org.gaussian.amplifix.toolkit.processor.EventProcessor;
 import org.gaussian.amplifix.toolkit.processor.RegisterProcessor;
+import org.gaussian.amplifix.toolkit.processor.TraceProcessor;
 import org.gaussian.amplifix.toolkit.verticle.AmplifixVerticle;
 
 import java.time.Duration;
@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Set;
 
 import static java.text.MessageFormat.format;
+import static java.util.Arrays.asList;
 import static org.gaussian.amplifix.toolkit.util.ProcessUtils.getHZHost;
 
 
@@ -128,8 +129,10 @@ public class AmplifixRunner {
     private static EventConsumer createEventConsumer(AmplifixSender sender) {
         DataGridNode dataGridNode = createDataGrid();
         dataGridNode.addEntryListener(createEntryListener(sender));
-        List<EventProcessor> processors = getEventProcessor(dataGridNode);
-        return new EventConsumer(new MetricSender(), new MetricBuilder(processors));
+        List<EventProcessor> metricProcessors = getMetricProcessor(dataGridNode);
+        List<EventProcessor> traceProcessors = asList(new TraceProcessor());
+        List<AsyncWorker> workers = asList(new MetricWorker(metricProcessors), new TraceWorker(traceProcessors));
+        return new EventConsumer(workers);
     }
 
     private static DataGridNode createDataGrid() {
@@ -143,7 +146,7 @@ public class AmplifixRunner {
         return new DropRegistryListener<String, DropRegistry>(sender);
     }
 
-    private static List<EventProcessor> getEventProcessor(DataGridNode dataGridNode) {
+    private static List<EventProcessor> getMetricProcessor(DataGridNode dataGridNode) {
         List<EventProcessor> processors = new ArrayList<>();
         processors.add(new CounterProcessor());
         processors.add(new RegisterProcessor(dataGridNode));

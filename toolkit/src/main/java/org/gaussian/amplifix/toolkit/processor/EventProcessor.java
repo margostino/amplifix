@@ -1,10 +1,9 @@
 package org.gaussian.amplifix.toolkit.processor;
 
-import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Tag;
+import org.gaussian.amplifix.toolkit.annotation.MetricAnnotation;
 import org.gaussian.amplifix.toolkit.model.Event;
 import org.gaussian.amplifix.toolkit.model.EventMetadata;
-import org.gaussian.amplifix.toolkit.annotation.MetricAnnotation;
 import org.gaussian.amplifix.toolkit.model.TagSerializable;
 
 import java.lang.annotation.Annotation;
@@ -13,10 +12,9 @@ import java.util.Optional;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static java.text.MessageFormat.format;
-import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
-public abstract class EventProcessor {
+public abstract class EventProcessor<D> {
 
     protected final String DEFAULT_PREFIX = "amplifix";
     protected final Class<? extends Annotation> annotationClass;
@@ -25,15 +23,15 @@ public abstract class EventProcessor {
         this.annotationClass = annotationClass;
     }
 
-    abstract List<Meter> getMeters(Event event);
+    abstract D getData(Event event);
 
     protected boolean filter(EventMetadata metadata) {
         return metadata.annotations.stream()
                                    .anyMatch(annotation -> annotation.filter(annotationClass));
     }
 
-    public List<Meter> process(Event event) {
-        return filter(event.metadata) ? getMeters(event) : emptyList();
+    public D process(Event event) {
+        return filter(event.metadata) ? getData(event) : null;
     }
 
     protected String decorateMetricName(String prefix, String metricName) {

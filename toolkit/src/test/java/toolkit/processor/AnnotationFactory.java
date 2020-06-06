@@ -1,6 +1,7 @@
 package toolkit.processor;
 
 import org.gaussian.amplifix.toolkit.annotation.Counter;
+import org.gaussian.amplifix.toolkit.annotation.Trace;
 
 import java.lang.annotation.Annotation;
 
@@ -26,6 +27,20 @@ public class AnnotationFactory {
             @Override
             public Class<? extends Annotation> annotationType() {
                 return Counter.class;
+            }
+        };
+    }
+
+    public static Trace trace() {
+        return new Trace() {
+            @Override
+            public String id() {
+                return "trace";
+            }
+
+            @Override
+            public Class<? extends Annotation> annotationType() {
+                return Trace.class;
             }
         };
     }

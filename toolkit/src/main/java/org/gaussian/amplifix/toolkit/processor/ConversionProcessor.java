@@ -26,7 +26,7 @@ public class ConversionProcessor extends EventProcessor {
         this.dataGridNode = dataGridNode;
     }
 
-    protected List<Meter> getMeters(Event event) {
+    protected List<Meter> getData(Event event) {
 
         List<Meter> meters = new ArrayList<>();
         List<Tag> tags = new ArrayList<>();

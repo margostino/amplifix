@@ -1,12 +1,10 @@
 package org.gaussian.amplifix.toolkit.eventbus;
 
-import io.micrometer.core.instrument.Meter;
 import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 import lombok.extern.slf4j.Slf4j;
-import org.gaussian.amplifix.toolkit.metric.MetricBuilder;
-import org.gaussian.amplifix.toolkit.metric.MetricSender;
+import org.gaussian.amplifix.toolkit.metric.AsyncWorker;
 import org.gaussian.amplifix.toolkit.model.Event;
 
 import java.util.List;
@@ -17,12 +15,10 @@ import static org.gaussian.amplifix.toolkit.json.JsonCodec.decode;
 @Slf4j
 public class EventConsumer implements Handler<Message<Object>> {
 
-    private MetricBuilder metricBuilder;
-    private MetricSender metricSender;
+    private List<AsyncWorker> workers;
 
-    public EventConsumer(MetricSender metricSender, MetricBuilder metricBuilder) {
-        this.metricBuilder = metricBuilder;
-        this.metricSender = metricSender;
+    public EventConsumer(List<AsyncWorker> workers) {
+        this.workers = workers;
     }
 
     public void handle(Message message) {
@@ -31,8 +27,7 @@ public class EventConsumer implements Handler<Message<Object>> {
         if (event.data.containsKey("startup")) {
             LOG.info(body.getJsonObject("data").getString("startup"));
         } else {
-            List<Meter> meters = metricBuilder.build(event);
-            meters.stream().forEach(metricSender::send);
+            workers.stream().forEach(worker -> worker.execute(event));
         }
     }
 }

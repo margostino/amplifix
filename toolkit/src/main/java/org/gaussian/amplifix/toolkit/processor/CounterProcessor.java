@@ -28,7 +28,7 @@ public class CounterProcessor extends EventProcessor {
         super(Counter.class);
     }
 
-    protected List<Meter> getMeters(Event event) {
+    protected List<Meter> getData(Event event) {
 
         List<Meter> meters = new ArrayList<>();
 

@@ -24,7 +24,7 @@ public class DropProcessor extends EventProcessor {
         super(DropRegister.class);
     }
 
-    public List<Meter> getMeters(Event event) {
+    public List<Meter> getData(Event event) {
 
         List<Meter> meters = new ArrayList<>();
         Optional<MetricAnnotation> metadata = lookupAnnotation(event);

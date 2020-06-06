@@ -17,9 +17,6 @@ public final class JsonCodec {
     private static final JsonStringCodec codec = JsonStringCodec.create();
     private static final JsonObjectMapper mapper = JsonObjectMapper.create();
 
-    private JsonCodec() {
-    }
-
     public static <T> T decode(String json, Class<T> clazz) {
         return codec.decode(json, clazz);
     }
