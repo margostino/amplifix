@@ -22,10 +22,10 @@ public class DemoService {
     private final List<String> sessionDatabase;
     private final TriggerStatusService triggerStatusService;
 
-    public DemoService(Amplifix amplifix, TriggerStatusService triggerStatusService) {
+    public DemoService(Amplifix amplifix) {
         this.amplifix = amplifix;
         this.sessionDatabase = new ArrayList<>();
-        this.triggerStatusService = triggerStatusService;
+        this.triggerStatusService = new TriggerStatusService();
     }
 
     public SessionResponse createSession(SessionRequest request) {

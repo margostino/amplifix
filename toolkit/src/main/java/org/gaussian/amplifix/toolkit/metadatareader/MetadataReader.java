@@ -5,6 +5,7 @@ import org.gaussian.amplifix.toolkit.annotation.Counter;
 import org.gaussian.amplifix.toolkit.annotation.Drop;
 import org.gaussian.amplifix.toolkit.annotation.DropRegister;
 import org.gaussian.amplifix.toolkit.annotation.MetricAnnotation;
+import org.gaussian.amplifix.toolkit.annotation.Trace;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -30,6 +31,9 @@ public class MetadataReader<E> {
             }
             if (annotation instanceof ConversionRegister) {
                 metricMetadata.add(ConversionRegisterAnnotation.of(annotation));
+            }
+            if (annotation instanceof Trace) {
+                metricMetadata.add(TraceAnnotation.of(annotation));
             }
         }
 

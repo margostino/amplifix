@@ -20,6 +20,7 @@ plugins {
 }
 
 apply plugin: 'java'
+apply plugin: 'maven'
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 
@@ -51,6 +52,12 @@ dependencies {
     compile group: 'io.vertx', name: 'vertx-micrometer-metrics', version: versionVertx
     compile group: 'org.jolokia', name: 'jolokia-core', version: versionJolokia
     //compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.2'
+
+    compile group: 'com.google.auto.service', name: 'auto-service', version: '1.0-rc7'
+    compile group: 'org.apache.maven.plugins', name: 'maven-compiler-plugin', version: '3.8.1'
+    compile group: 'cglib', name: 'cglib', version: '3.3.0'
+    compile group: 'com.squareup', name: 'javapoet', version: '1.12.1'
+    compile group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.12'
 
     testCompile group: 'org.assertj', name: 'assertj-core', version: versionAssertj
     testCompile group: 'junit', name: 'junit', version: versionJunit

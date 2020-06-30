@@ -14,9 +14,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import toolkit.eventbus.factory.AuthorizeResponse;
-import toolkit.eventbus.factory.OrderResponse;
-import toolkit.eventbus.factory.SessionResponse;
+import toolkit.factory.domain.AuthorizeResponse;
+import toolkit.factory.domain.OrderResponse;
+import toolkit.factory.domain.SessionResponse;
 
 import static java.time.Instant.now;
 import static java.util.Arrays.asList;
@@ -28,7 +28,7 @@ import static toolkit.eventbus.MessageValidationHelper.assertValidDropMessage;
 import static toolkit.eventbus.MessageValidationHelper.assertValidOrderResponseMessage;
 import static toolkit.eventbus.MessageValidationHelper.assertValidSessionResponseMessage;
 import static toolkit.eventbus.MessageValidationHelper.assertValidTraceSessionResponseMessage;
-import static toolkit.eventbus.factory.Status.APPROVED;
+import static toolkit.factory.domain.Status.APPROVED;
 
 @RunWith(VertxUnitRunner.class)
 public class AmplifixSenderTest {

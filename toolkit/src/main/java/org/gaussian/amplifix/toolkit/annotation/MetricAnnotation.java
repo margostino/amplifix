@@ -6,6 +6,7 @@ import org.gaussian.amplifix.toolkit.metadatareader.ConversionRegisterAnnotation
 import org.gaussian.amplifix.toolkit.metadatareader.CounterAnnotation;
 import org.gaussian.amplifix.toolkit.metadatareader.DropAnnotation;
 import org.gaussian.amplifix.toolkit.metadatareader.DropRegisterAnnotation;
+import org.gaussian.amplifix.toolkit.metadatareader.TraceAnnotation;
 
 import java.lang.annotation.Annotation;
 
@@ -17,7 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
                @JsonSubTypes.Type(value = CounterAnnotation.class, name = "counter"),
                @JsonSubTypes.Type(value = DropAnnotation.class, name = "drop"),
                @JsonSubTypes.Type(value = ConversionRegisterAnnotation.class, name = "conversion_register"),
-               @JsonSubTypes.Type(value = DropRegisterAnnotation.class, name = "drop_register")
+               @JsonSubTypes.Type(value = DropRegisterAnnotation.class, name = "drop_register"),
+               @JsonSubTypes.Type(value = TraceAnnotation.class, name = "trace")
               })
 public interface MetricAnnotation {
 

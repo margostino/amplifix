@@ -17,4 +17,14 @@ public class Event {
     public List<MetricAnnotation> getAnnotations() {
         return metadata.annotations;
     }
+
+    @JsonIgnore
+    public boolean isStartup() {
+        return data.containsKey("startup");
+    }
+
+    @JsonIgnore
+    public String getStartup() {
+        return data.getString("startup");
+    }
 }

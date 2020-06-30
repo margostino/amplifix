@@ -39,6 +39,11 @@ public class AnnotationFactory {
             }
 
             @Override
+            public boolean enable() {
+                return true;
+            }
+
+            @Override
             public Class<? extends Annotation> annotationType() {
                 return Trace.class;
             }

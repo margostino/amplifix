@@ -7,6 +7,14 @@ import org.gaussian.amplifix.toolkit.Amplifix;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import toolkit.factory.domain.Session;
+import toolkit.factory.domain.Status;
+
+import java.time.Instant;
+
+import static java.time.Instant.now;
+import static toolkit.factory.domain.Status.APPROVED;
+import static toolkit.factory.domain.Status.PENDING;
 
 @RunWith(VertxUnitRunner.class)
 public class AmplifixTest {
@@ -29,4 +37,13 @@ public class AmplifixTest {
         Amplifix amplifix = Amplifix.runSync();
         amplifix.send(message);
     }
+
+    @Test
+    public void proxyObject() {
+        Amplifix amplifix = Amplifix.runSync();
+        Session session = (Session) amplifix.create(Session.class, "mock.id", now(), APPROVED);
+        session.setStatus(PENDING);
+        session.doNotMutate(10);
+    }
+
 }

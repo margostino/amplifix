@@ -3,8 +3,8 @@ package toolkit.eventbus.workers;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Meter;
 import io.vertx.core.json.JsonObject;
-import org.gaussian.amplifix.toolkit.metric.MetricWorker;
-import org.gaussian.amplifix.toolkit.metric.TraceWorker;
+import org.gaussian.amplifix.toolkit.worker.MetricWorker;
+import org.gaussian.amplifix.toolkit.worker.TraceWorker;
 import org.gaussian.amplifix.toolkit.model.Event;
 import org.gaussian.amplifix.toolkit.model.EventMetadata;
 import org.gaussian.amplifix.toolkit.processor.CounterProcessor;
@@ -13,10 +13,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static io.micrometer.core.instrument.Meter.Type.COUNTER;
 import static java.time.Instant.now;
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;

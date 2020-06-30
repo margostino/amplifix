@@ -2,16 +2,16 @@ package toolkit.processor;
 
 import io.vertx.core.json.JsonObject;
 import org.gaussian.amplifix.toolkit.annotation.Counter;
+import org.gaussian.amplifix.toolkit.annotation.MetricAnnotation;
 import org.gaussian.amplifix.toolkit.annotation.Trace;
+import org.gaussian.amplifix.toolkit.metadatareader.CounterAnnotation;
 import org.gaussian.amplifix.toolkit.metadatareader.TraceAnnotation;
 import org.gaussian.amplifix.toolkit.model.Event;
 import org.gaussian.amplifix.toolkit.model.EventMetadata;
-import org.gaussian.amplifix.toolkit.metadatareader.CounterAnnotation;
-import org.gaussian.amplifix.toolkit.annotation.MetricAnnotation;
 
+import static java.time.Instant.now;
 import static java.util.Arrays.asList;
 import static toolkit.processor.AnnotationFactory.counter;
-import static java.time.Instant.now;
 import static toolkit.processor.AnnotationFactory.trace;
 
 

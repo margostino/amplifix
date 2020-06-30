@@ -10,5 +10,7 @@ import java.lang.annotation.Target;
 public @interface Trace {
 
     String id() default "trace";
+
+    boolean enable() default true;
     
 }

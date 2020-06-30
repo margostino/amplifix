@@ -3,9 +3,9 @@ package toolkit.eventbus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 import org.gaussian.amplifix.toolkit.eventbus.EventConsumer;
-import org.gaussian.amplifix.toolkit.metric.AsyncWorker;
 import org.gaussian.amplifix.toolkit.model.Event;
 import org.gaussian.amplifix.toolkit.model.EventMetadata;
+import org.gaussian.amplifix.toolkit.worker.AsyncWorker;
 import org.junit.Test;
 import org.mockito.Mock;
 

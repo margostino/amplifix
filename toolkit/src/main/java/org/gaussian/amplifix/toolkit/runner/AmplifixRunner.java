@@ -23,16 +23,17 @@ import org.gaussian.amplifix.toolkit.datagrid.DropRegistryListener;
 import org.gaussian.amplifix.toolkit.eventbus.AmplifixEventBus;
 import org.gaussian.amplifix.toolkit.eventbus.AmplifixSender;
 import org.gaussian.amplifix.toolkit.eventbus.EventConsumer;
-import org.gaussian.amplifix.toolkit.metric.AsyncWorker;
-import org.gaussian.amplifix.toolkit.metric.MetricWorker;
-import org.gaussian.amplifix.toolkit.metric.TraceWorker;
 import org.gaussian.amplifix.toolkit.processor.ConversionProcessor;
 import org.gaussian.amplifix.toolkit.processor.CounterProcessor;
 import org.gaussian.amplifix.toolkit.processor.DropProcessor;
 import org.gaussian.amplifix.toolkit.processor.EventProcessor;
 import org.gaussian.amplifix.toolkit.processor.RegisterProcessor;
 import org.gaussian.amplifix.toolkit.processor.TraceProcessor;
+import org.gaussian.amplifix.toolkit.proxy.AmplifixProxy;
 import org.gaussian.amplifix.toolkit.verticle.AmplifixVerticle;
+import org.gaussian.amplifix.toolkit.worker.AsyncWorker;
+import org.gaussian.amplifix.toolkit.worker.MetricWorker;
+import org.gaussian.amplifix.toolkit.worker.TraceWorker;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -65,7 +66,7 @@ public class AmplifixRunner {
             return amplifixFuture.result();
         } else {
             LOG.error(amplifixFuture.cause().getMessage());
-            return new Amplifix(null);
+            return new Amplifix(null, null);
         }
 
     }
@@ -81,7 +82,9 @@ public class AmplifixRunner {
             if (async.succeeded()) {
                 Duration duration = Duration.between(start, Instant.now());
                 LOG.info("Amplifix verticle deployed in {} seconds", duration.getSeconds());
-                startup.complete(new Amplifix(deployVertxVerticle(async.result())));
+                AmplifixSender amplifixSender = deployVertxVerticle(async.result());
+                AmplifixProxy amplifixProxy = new AmplifixProxy(amplifixSender);
+                startup.complete(new Amplifix(amplifixSender, amplifixProxy));
             } else {
                 LOG.error("Amplifix verticle deployment failed: " + async.cause().getMessage());
                 startup.fail(async.cause());
@@ -114,10 +117,10 @@ public class AmplifixRunner {
         JsonObject handshake = new JsonObject().put("startup", "Amplifix handshake successfully");
         AmplifixEventBus amplifixEventBus = createEventBus(vertx);
         vertx.deployVerticle(new AmplifixVerticle());
-        amplifixEventBus.send(handshake);
         AmplifixSender amplifixSender = new AmplifixSender(amplifixEventBus);
         EventConsumer eventConsumer = createEventConsumer(amplifixSender);
         amplifixEventBus.setConsumer(eventConsumer);
+        amplifixSender.send(handshake);
         return amplifixSender;
     }
 

@@ -53,8 +53,7 @@ public class DemoConfiguration {
     @Bean
     public DemoService createApiService() {
         Amplifix amplifix = Amplifix.runSync();
-        TriggerStatusService triggerStatusService = new TriggerStatusService();
-        return new DemoService(amplifix, triggerStatusService);
+        return new DemoService(amplifix);
     }
 
 }

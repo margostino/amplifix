@@ -13,10 +13,8 @@ import io.vertx.micrometer.VertxPrometheusOptions;
 import io.vertx.micrometer.backends.BackendRegistries;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.gaussian.amplifix.toolkit.eventbus.AmplifixEventBus;
 import org.gaussian.amplifix.toolkit.eventbus.AmplifixSender;
-import org.gaussian.amplifix.toolkit.model.ConversionEvent;
-import org.gaussian.amplifix.toolkit.model.TracedEvent;
+import org.gaussian.amplifix.toolkit.proxy.AmplifixProxy;
 import org.gaussian.amplifix.toolkit.runner.AmplifixRunner;
 import org.gaussian.amplifix.toolkit.runner.SystemStatus;
 
@@ -24,15 +22,17 @@ import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
 
-import static io.vertx.core.json.JsonObject.mapFrom;
-import static java.time.Instant.now;
-
 
 @AllArgsConstructor
 @Slf4j
 public class Amplifix<E> {
 
     private AmplifixSender sender;
+    private AmplifixProxy proxy;
+
+    public <T> T create(Class<T> clazz, Object... arguments) {
+        return proxy.create(clazz, arguments);
+    }
 
     public static Amplifix runSync() {
 
