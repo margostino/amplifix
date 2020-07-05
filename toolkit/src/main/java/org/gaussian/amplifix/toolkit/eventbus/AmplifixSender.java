@@ -21,6 +21,10 @@ public class AmplifixSender<E> {
         this.eventBus = eventBus;
     }
 
+    public static void traceMethod(Object event) {
+
+    }
+
     public void send(E event) {
         eventBus.send(encoder.encode(event));
     }

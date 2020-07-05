@@ -1,5 +1,6 @@
 package demo;
 
+import demo.repository.RepositoryService;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.gaussian.amplifix.toolkit.Amplifix;
@@ -53,7 +54,8 @@ public class DemoConfiguration {
     @Bean
     public DemoService createApiService() {
         Amplifix amplifix = Amplifix.runSync();
-        return new DemoService(amplifix);
+        RepositoryService repositoryService = new RepositoryService(amplifix);
+        return new DemoService(amplifix, repositoryService);
     }
 
 }

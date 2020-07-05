@@ -6,7 +6,7 @@ import io.vertx.core.json.JsonObject;
 public class AmplifixEventBus<E> {
 
     private final EventBus vertxEventBus;
-    private final String DEFAULT_ADDRESS = "amplifix.events";
+    private static String DEFAULT_ADDRESS = "amplifix.events";
 
     public AmplifixEventBus(EventBus vertxEventBus) {
         this.vertxEventBus = vertxEventBus;

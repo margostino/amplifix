@@ -58,6 +58,9 @@ dependencies {
     compile group: 'cglib', name: 'cglib', version: '3.3.0'
     compile group: 'com.squareup', name: 'javapoet', version: '1.12.1'
     compile group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.12'
+    compile group: 'org.ow2.asm', name: 'asm', version: '8.0.1'
+    compile group: 'com.google.code.java-allocation-instrumenter', name: 'java-allocation-instrumenter', version: '3.3.0'
+    compile group: 'org.javassist', name: 'javassist', version: '3.27.0-GA'
 
     testCompile group: 'org.assertj', name: 'assertj-core', version: versionAssertj
     testCompile group: 'junit', name: 'junit', version: versionJunit
@@ -98,4 +101,23 @@ task welcome {
 task sourceJar(type: Jar) {
     from sourceSets.main.allJava
     classifier = 'sources'
+}
+
+task toAgentJar(type: Jar) {
+    archiveName = "../../bin/${rootProject.name}-agent-${rootProject.version}.jar"
+    manifest {
+        attributes(
+                'Main-Class': 'toolkit.instrumentation.asm.myagent.HelloPrinter',
+                'Premain-Class': 'toolkit.instrumentation.asm.myagent.Agent',
+                'Agent-Class': 'toolkit.instrumentation.asm.myagent.Agent',
+                'Can-Redefine-Classes': 'true',
+                'Can-Retransform-Classes': 'true',
+                'Can-Set-Native-Method-Prefix': 'true',
+                'Implementation-Title': "AmplifixAgent",
+                'Implementation-Version': rootProject.version,
+                'Built-By': 'Martin',
+                'Built-Date': new Date(),
+                'Built-JDK': System.getProperty('java.version')
+        )
+    }
 }

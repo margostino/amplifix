@@ -5,10 +5,11 @@ import io.micrometer.core.instrument.Meter;
 import org.gaussian.amplifix.toolkit.model.Event;
 import org.gaussian.amplifix.toolkit.processor.EventProcessor;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import static io.micrometer.core.instrument.Meter.Type.COUNTER;
-import static java.util.stream.Collectors.toList;
 
 public class MetricWorker<D> extends AsyncWorker<D> {
 
@@ -19,16 +20,19 @@ public class MetricWorker<D> extends AsyncWorker<D> {
     }
 
     public void execute(Event event) {
+        processors.stream()
+                  .map(processor -> processor.process(event))
+                  .filter(Objects::nonNull)
+                  .map(List.class::cast)
+                  .flatMap(Collection::stream)
+                  .map(Meter.class::cast)
+                  .filter(this::filterByCounter)
+                  .map(Counter.class::cast)
+                  .forEach(Counter::increment);
+    }
 
-        List<Meter> meters = processors.stream()
-                                       .map(processor -> processor.process(event))
-                                       .map(Meter.class::cast)
-                                       .collect(toList());
-
-        meters.stream()
-              .filter(meter -> meter != null && meter.getId().getType().equals(COUNTER))
-              .map(Counter.class::cast)
-              .forEach(Counter::increment);
+    private boolean filterByCounter(Meter meter) {
+        return meter != null && meter.getId().getType().equals(COUNTER);
     }
 
 }

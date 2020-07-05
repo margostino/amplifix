@@ -23,11 +23,13 @@ help:
 
 .PHONY: build-toolkit
 build-toolkit:
+	rm -f ./demo-spring/libs/amplifix-latest.jar
+	rm -f ./demo-vertx/libs/amplifix-latest.jar
 	./toolkit/gradlew -p toolkit clean build -PbuildVersion=${BUILD_VERSION} copyJarToDemo -x :test
 
 .PHONY: build-demo-spring
 build-demo-spring:
-	./demo-spring/gradlew -p demo-spring clean build -PbuildVersion=${BUILD_VERSION} copyJarToRoot -x :test
+	./demo-spring/gradlew -p demo-spring clean build -PbuildVersion=${BUILD_VERSION} copyJarToRoot -x :test --stacktrace
 
 .PHONY: build-demo-vertx
 build-demo-vertx:

@@ -15,8 +15,8 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static toolkit.processor.EventFactory.eventWithCounter;
-import static toolkit.processor.EventFactory.eventWithTrace;
+import static toolkit.factory.EventFactory.eventWithCounter;
+import static toolkit.factory.EventFactory.eventWithTrace;
 
 public class EventProcessorTest {
 

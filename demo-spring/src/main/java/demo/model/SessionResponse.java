@@ -3,6 +3,7 @@ package demo.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.gaussian.amplifix.toolkit.annotation.Counter;
 import org.gaussian.amplifix.toolkit.annotation.Drop;
+import org.gaussian.amplifix.toolkit.annotation.DropConfig;
 
 import java.time.Instant;
 import java.util.List;
@@ -17,27 +18,24 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.gaussian.amplifix.toolkit.util.MathUtils.getProbabilityAsInt;
 
 @Drop(metricName = "session_drop",
-      field = "session_id",
-      event = "AuthorizeResponse",
-      ttl = 10,
-      timeUnit = SECONDS,
-      tags = { "country" })
+      tags = {"country"},
+      config = @DropConfig(event = "AuthorizeResponse", field = "session_id", ttl = 30, timeUnit = SECONDS))
 @Counter(metricName = "create_session", fields = {"payment_method_categories", "country"})
 public class SessionResponse {
 
     @JsonProperty("session_id")
     public final String sessionId;
     public final String description;
-    public final Instant created;
+    public final Instant createdAt;
     public final String country;
     public final Status status;
     @JsonProperty("payment_method_categories")
     public final List<PaymentMethodCategory> paymentMethodCategories;
 
-    public SessionResponse(String description, String country, Instant created) {
+    public SessionResponse(String description, String country, Instant createdAt) {
         this.sessionId = UUID.randomUUID().toString();
         this.description = description;
-        this.created = created;
+        this.createdAt = createdAt;
         this.country = country;
         this.status = APPROVED;
 

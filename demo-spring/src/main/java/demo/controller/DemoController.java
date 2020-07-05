@@ -45,6 +45,15 @@ public class DemoController {
         return demoService.createSession(request);
     }
 
+    @RequestMapping(value = "/payments/sessions/{session_id}",
+                    method = GET,
+                    produces = APPLICATION_JSON_VALUE)
+    public SessionResponse createSession(HttpServletRequest httpRequest,
+                                         @PathVariable("session_id") @NotNull String sessionId) {
+        log.info("Read session");
+        return demoService.readSession(sessionId);
+    }
+
     @RequestMapping(value = "/payments/sessions/{session_id}/payment_methods",
                     method = GET,
                     produces = APPLICATION_JSON_VALUE)

@@ -2,9 +2,11 @@ package demo.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.gaussian.amplifix.toolkit.annotation.Counter;
+import org.gaussian.amplifix.toolkit.annotation.Trace;
 
 import java.util.UUID;
 
+@Trace
 @Counter(metricName = "create_order", fields = {"payment_method", "status"})
 public class OrderResponse {
 
@@ -20,5 +22,8 @@ public class OrderResponse {
         this.paymentMethod = paymentMethod;
     }
 
+    public void dummy() {
+        // do something
+    }
 
 }
