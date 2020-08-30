@@ -32,9 +32,6 @@ Under the wood the toolkit needs to underderstand the source, the type of metric
 
 **IMPORTANT:** This project is an experiment and it is in continuous progress, adding, changing features and evaluating performance and new functionalities. Once this toolkit is stable, and with a bounded scope, the first version will be properly released and documented. So it should not be used in Production environments.
 
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need.
-
-
 ### Built With
 The toolkit is built on top of [Micrometer](https://micrometer.io/) and uses [Vertx](https://vertx.io) to enable the event bus along the service.
 Also it uses [Hazelcast](https://hazelcast.com) to allow building complex metric such as conversion rate given an event (more info is coming...).
