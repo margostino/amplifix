@@ -152,4 +152,4 @@ http://localhost:8080/hazelcast-mancenter/dev
 <!-- LICENSE -->
 ## License
 
-[coming soon...]
+Distributed under Apache License. See [LICENSE](https://github.com/margostino/amplifix/blob/master/LICENSE) for more information.
