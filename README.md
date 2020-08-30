@@ -30,7 +30,7 @@ eventBus.send(event)
 
 Under the wood the toolkit needs to underderstand the source, the type of metric and the values required.
 
-**IMPORTANT:** This project is an experiment and it is in continuous progress, adding, changing features and evaluating performance and new functionalities. Once this toolkit is stable, and with a bounded scope, the firt version will be properly relesed and documented. So it should not be used in Production environments.
+**IMPORTANT:** This project is an experiment and it is in continuous progress, adding, changing features and evaluating performance and new functionalities. Once this toolkit is stable, and with a bounded scope, the first version will be properly released and documented. So it should not be used in Production environments.
 
 There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need.
 
