@@ -81,6 +81,7 @@ build_docker_image() {
    log_info "Service Port: ${service_port}"
    log_info "Metrics Port: ${metrics_port}"
    log_info "Build Version: ${build_version}"
+   log_info "Service Name: ${SERVICE_NAME}"
 
    #docker_login
 #   log_info "Building service with version ${BUILD_VERSION}"
