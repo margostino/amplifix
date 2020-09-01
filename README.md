@@ -15,7 +15,7 @@
 
 ![architecture](./documentation/images/architecture.png#center)
 
-Amplifix is Java toolkit built on top of [Micrometer](https://micrometer.io/) to provide a declarative and simpler way to build and expose metrics from any Java service (not necessarily RESTful API). This toolkit is framework agnostic.
+Amplifix is Java toolkit built on top of [Micrometer](https://micrometer.io/) to provide a declarative and simpler way to build and expose metrics from any Java service (not necessarily RESTful API). This toolkit is framework agnostic. You can use it together with Spring, Dropwizard, Vertx, or many others.
 
 The main motivation is to isolate the metric handling from any service which only should care of business logic.
 The build and posting happen asyncronous using a [Vertx Event Bus](https://vertx.io/docs/vertx-core/java/).
