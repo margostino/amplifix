@@ -1,0 +1,2 @@
+Java toolkit (with Demo Service) built on top of [Micrometer](https://micrometer.io/) to provides a declarative and simpler way to build and expose metrics from any Java service.
+Copyright 2020 Martín D'Agostino
