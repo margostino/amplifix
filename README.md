@@ -15,7 +15,7 @@
 
 ![architecture](./documentation/images/architecture.png#center)
 
-Amplifix is Java toolkit built on top of [Micrometer](https://micrometer.io/) to provides a declarative and simpler way to build and expose metrics from any Java service (not necessarily RESTful API). This toolkit is framework agnostic.
+Amplifix is Java toolkit built on top of [Micrometer](https://micrometer.io/) to provide a declarative and simpler way to build and expose metrics from any Java service (not necessarily RESTful API). This toolkit is framework agnostic. You can use it together with Spring, Dropwizard, Vertx, or many others.
 
 The main motivation is to isolate the metric handling from any service which only should care of business logic.
 The build and posting happen asyncronous using a [Vertx Event Bus](https://vertx.io/docs/vertx-core/java/).
@@ -30,10 +30,7 @@ eventBus.send(event)
 
 Under the wood the toolkit needs to underderstand the source, the type of metric and the values required.
 
-**IMPORTANT:** This project is an experiment and it is in progress adding, changing features and evaluating performance and new functionalities. Once this toolkit is stable, the firt version will be properly relesed and documented. So it should not be used in Production environments.
-
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need.
-
+**IMPORTANT:** This project is an experiment and it is in continuous progress, adding, changing features and evaluating performance and new functionalities. Once this toolkit is stable, and with a bounded scope, the first version will be properly released and documented. So it should not be used in Production environments.
 
 ### Built With
 The toolkit is built on top of [Micrometer](https://micrometer.io/) and uses [Vertx](https://vertx.io) to enable the event bus along the service.
