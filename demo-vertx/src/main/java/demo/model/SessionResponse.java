@@ -3,6 +3,7 @@ package demo.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.gaussian.amplifix.toolkit.annotation.Counter;
 import org.gaussian.amplifix.toolkit.annotation.Drop;
+import org.gaussian.amplifix.toolkit.annotation.DropConfig;
 
 import java.time.Instant;
 import java.util.List;
@@ -15,11 +16,8 @@ import static java.util.Arrays.asList;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Drop(metricName = "session_drop",
-      field = "session_id",
-      event = "AuthorizeResponse",
-      ttl = 10,
-      timeUnit = SECONDS,
-      tags = { "country" })
+      tags = {"country"},
+      config = @DropConfig(event = "AuthorizeResponse", field = "session_id", ttl = 30, timeUnit = SECONDS))
 @Counter(metricName = "create_session", fields = {"payment_method_categories", "country"})
 public class SessionResponse {
 

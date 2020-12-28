@@ -24,7 +24,7 @@ public class MessageValidationHelper {
             JsonArray fields = counter.getJsonArray("fields");
             JsonArray paymentMethodCategories = data.getJsonArray("payment_method_categories");
 
-            context.assertEquals(2, annotations.size());
+            context.assertEquals(3, annotations.size());
             context.assertEquals("session_drop", drop.getString("metric_name"));
             context.assertEquals("session_id", drop.getString("field"));
             context.assertEquals("AuthorizeResponse", drop.getString("event"));
@@ -135,7 +135,7 @@ public class MessageValidationHelper {
             JsonArray paymentMethodCategories = event.getJsonArray("payment_method_categories");
             JsonArray annotations = metadata.getJsonArray("annotations");
 
-            context.assertEquals(0, annotations.size());
+            context.assertEquals(1, annotations.size());
             context.assertEquals("test session response", event.getString("description"));
             context.assertTrue(!isNullOrEmpty(event.getString("created")));
             context.assertEquals("SE", event.getString("country"));

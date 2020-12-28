@@ -93,13 +93,14 @@ public class EventProcessorTest {
         EventProcessor processor = new TraceProcessor();
         Event event = eventWithTrace(data);
         JsonObject trace = new JsonObject((String) processor.process(event));
+        JsonObject data = trace.getJsonObject("data");
 
-        assertEquals(trace.getString("session_id"), "mock.session.id");
-        assertEquals(trace.getString("description"), "mock test rock");
-        assertTrue(trace.getString("created_at") != null);
-        assertEquals(trace.getString("country"), "SE");
-        assertEquals(trace.getString("status"), "APPROVED");
-        assertTrue(trace.getJsonArray("payment_method_categories").contains("pay_later"));
-        assertTrue(trace.getJsonArray("payment_method_categories").contains("pay_now"));
+        assertEquals(data.getString("session_id"), "mock.session.id");
+        assertEquals(data.getString("description"), "mock test rock");
+        assertTrue(data.getString("created_at") != null);
+        assertEquals(data.getString("country"), "SE");
+        assertEquals(data.getString("status"), "APPROVED");
+        assertTrue(data.getJsonArray("payment_method_categories").contains("pay_later"));
+        assertTrue(data.getJsonArray("payment_method_categories").contains("pay_now"));
     }
 }
