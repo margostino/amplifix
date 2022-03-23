@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -39,9 +40,11 @@ public class DemoController {
                     consumes = APPLICATION_JSON_VALUE,
                     produces = APPLICATION_JSON_VALUE)
     public SessionResponse createSession(HttpServletRequest httpRequest,
+                                         HttpServletResponse response,
                                          @RequestBody SessionRequest request) {
         //HttpRequestProperties httpRequestProperties = HttpRequestProperties.fromRequest(httpRequest);
         log.info("Create session");
+        response.addHeader("experiments", "a,b,c");
         return demoService.createSession(request);
     }
 
